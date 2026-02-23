@@ -1,0 +1,2527 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<title>@Night-NewBie</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --primary: #6a5af9; --secondary: #5041d5; --accent: #f72585;
+    --bg-light: #f4f7fc; --bg-dark: #161925;
+    --surface-light: #ffffff; --surface-dark: #232a40;
+    --text-light: #212529; --text-dark: #e8eaed;
+    --border-light: rgba(0, 0, 0, 0.1); --border-dark: rgba(255, 255, 255, 0.1);
+    --glass-light: rgba(255, 255, 255, 0.7); --glass-dark: rgba(35, 42, 64, 0.7);
+    --success: #20c997; --danger: #e63946; --warning: #ffb703; --info: #0096c7;
+
+    /* Dynamic Font Size Variable - Default 16px */
+    --dynamic-size: 16px;
+  }
+
+  html {
+      font-size: 14px; 
+      -webkit-text-size-adjust: 100%;
+      height: 100%;
+  }
+
+  * { 
+      box-sizing: border-box; 
+      -webkit-tap-highlight-color: transparent; 
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-light);
+    color: var(--text-light);
+    margin: 0;
+    transition: background-color 0.3s, color 0.3s;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow: hidden; 
+    height: 100%;
+    min-height: 100vh; 
+    min-height: -webkit-fill-available;
+  }
+  body.dark-mode {
+    background-color: var(--bg-dark);
+    color: var(--text-dark);
+  }
+
+  /* --- Home Screen --- */
+  #home-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 100%;
+    padding: 0 !important; 
+    overflow-y: auto;
+  }
+  .home-header {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+    margin-top: 2rem;
+  }
+  .home-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 2rem 1rem; 
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    box-shadow: none !important;
+    border-top: 1px solid var(--border-light);
+    border-bottom: 1px solid var(--border-light);
+    background-color: var(--surface-light);
+  }
+  body.dark-mode .home-card {
+    background-color: var(--surface-dark);
+    border-color: var(--border-dark);
+  }
+
+  /* Inner wrapper to keep text centered and readable */
+  .home-content-wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+      width: 100%;
+  }
+
+  .home-card h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+  }
+  .test-details p {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.8rem;
+  }
+  body.dark-mode .test-details p {
+      border-bottom-color: var(--border-dark);
+  }
+  .test-details p span:first-child {
+      font-weight: 500;
+      opacity: 0.8;
+      white-space: nowrap;
+      margin-right: 15px;
+  }
+  .test-details p span:last-child {
+      font-weight: 600;
+      text-align: right;
+      word-break: break-word; 
+  }
+  #startQuizBtn {
+      width: 100%;
+      padding: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      background-color: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+      touch-action: manipulation;
+      margin-top: 10px;
+  }
+   #startQuizBtn:hover {
+      background-color: var(--secondary);
+   }
+  .home-footer {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 15px 30px;
+      font-weight: 600;
+      opacity: 0.9;
+      font-size: 0.9rem;
+  }
+  .home-footer a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s;
+  }
+  .home-footer a:hover {
+      color: var(--primary);
+      text-decoration: underline;
+  }
+
+
+  /* --- Main Layout --- */
+  .quiz-layout {
+    display: block; 
+    height: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* MAIN CONTAINER */
+  .quiz-main {
+    padding: 0; 
+    position: relative;
+    height: 100vh; 
+    height: 100dvh; 
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    width: 100%; 
+  }
+
+  /* --- POPUP MODAL FOR PALETTE (Replaces Sidebar) --- */
+  
+  .palette-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2000;
+      background-color: rgba(0, 0, 0, 0.7); 
+
+      display: flex; 
+      justify-content: center;
+      align-items: center;
+
+      
+      visibility: hidden;
+      opacity: 0;
+      pointer-events: none;
+
+      
+      transition: opacity 0.2s ease-out, visibility 0s linear 0.2s;
+      will-change: opacity;
+  }
+
+  .palette-modal.show {
+      visibility: visible;
+      opacity: 1;
+      pointer-events: auto;
+      transition: opacity 0.2s ease-out, visibility 0s linear 0s; 
+  }
+
+  .palette-content-box {
+      width: 90%;
+      max-width: 380px; 
+      max-height: 85vh;
+      background-color: var(--surface-light);
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+
+      /* Optimised transform animation */
+      transform: scale(0.95) translate3d(0, 10px, 0);
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      will-change: transform;
+      backface-visibility: hidden;
+  }
+  .palette-modal.show .palette-content-box {
+      transform: scale(1) translate3d(0, 0, 0);
+  }
+  body.dark-mode .palette-content-box {
+      background-color: var(--surface-dark);
+      border: 1px solid var(--border-dark);
+  }
+
+  .palette-header {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-light);
+  }
+  body.dark-mode .palette-header {
+      border-bottom-color: var(--border-dark);
+      background: var(--bg-dark);
+  }
+
+  .palette-body {
+      padding: 15px;
+      overflow-y: auto;
+      flex-grow: 1;
+  }
+
+  .palette-footer {
+      padding: 12px 20px;
+      border-top: 1px solid var(--border-light);
+      background: var(--bg-light);
+  }
+  body.dark-mode .palette-footer {
+      border-top-color: var(--border-dark);
+      background: var(--bg-dark);
+  }
+
+
+  /* --- Shared Card Style --- */
+  .card-ui {
+    background-color: var(--surface-light);
+    border-radius: 12px;
+    border: 1px solid var(--border-light);
+    margin-bottom: 15px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+  }
+  body.dark-mode .card-ui {
+    background-color: var(--surface-dark);
+    border-color: var(--border-dark);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  /* --- Integrated Sidebar Blocks --- */
+  .sidebar-section {
+      padding-bottom: 15px;
+      border-bottom: 1px solid var(--border-light);
+      margin-bottom: 15px;
+  }
+  body.dark-mode .sidebar-section { border-bottom-color: var(--border-dark); }
+  .sidebar-section:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+  .timer-box { text-align: center; background: rgba(0,0,0,0.03); padding: 8px; border-radius: 10px; }
+  body.dark-mode .timer-box { background: rgba(255,255,255,0.05); }
+  .timer-display { font-size: 1.8rem; font-weight: 700; letter-spacing: 2px; line-height: 1; margin-bottom: 5px; }
+  #timeProgress { height: 6px; border-radius: 3px; }
+
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 10px; }
+  .stat-item { 
+      text-align: center; 
+      background: rgba(0,0,0,0.03); 
+      padding: 4px 2px; 
+      border-radius: 6px; 
+  }
+  body.dark-mode .stat-item { background: rgba(255,255,255,0.05); }
+  .stat-item .value { font-weight: 700; font-size: 0.9rem; line-height: 1.2; } 
+  .stat-item .label { font-size: 0.65rem; opacity: 0.7; }
+  .value.correct { color: var(--success); }
+  .value.incorrect { color: var(--danger); }
+  .value.marked { color: var(--info); }
+  .value.unattempted { color: var(--warning); }
+
+
+  /* --- Main Content Area --- */
+  .quiz-main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    flex-shrink: 0; 
+    background-color: var(--bg-light);
+    z-index: 10;
+    border-bottom: 1px solid transparent;
+  }
+  body.dark-mode .quiz-main-header {
+      background-color: var(--bg-dark);
+  }
+
+  /* Header Timer Style */
+  .header-timer {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-left: 15px;
+      margin-right: auto;
+      letter-spacing: 1px;
+      font-variant-numeric: tabular-nums;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.2s;
+  }
+  .header-timer:active { transform: scale(0.95); opacity: 0.8; }
+  .header-timer::after { content: '⛶'; font-size: 0.8em; margin-left: 5px; opacity: 0.5; vertical-align: middle; }
+
+  /* Trigger Button for Palette - Visible on All Screens */
+  .palette-trigger { 
+      background: none; 
+      border: none; 
+      font-size: 1.375rem; 
+      color: var(--text-light); 
+      padding: 5px; 
+      cursor: pointer; 
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  body.dark-mode .palette-trigger { color: var(--text-dark); }
+  .palette-trigger:hover { color: var(--primary); }
+
+  /* --- SCROLLABLE QUESTION AREA --- */
+  .quiz-content-area {
+      flex: 1; 
+      overflow-y: auto; 
+      
+      padding: 10px 0 90px 0; 
+      -webkit-overflow-scrolling: touch;
+      width: 100%;
+  }
+
+  /* Specific styling for Question Card to be Full Width (Clean Mode) */
+  .quiz-content-area .card-ui {
+      border-radius: 0; 
+      border-left: none;
+      border-right: none;
+      margin-left: 0;
+      margin-right: 0;
+      box-shadow: none;
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+      
+      padding: 8px 15px 15px 15px; 
+  }
+  
+  .results-container.card-ui {
+      border-radius: 12px;
+      margin: 15px; 
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      padding: 20px;
+  }
+
+  .thin-progress-bar {
+    height: 4px;
+    background-color: var(--border-light);
+    border-radius: 0; 
+    margin-bottom: 0;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  body.dark-mode .thin-progress-bar {
+      background-color: var(--border-dark);
+  }
+  .thin-progress-bar-inner {
+      height: 100%;
+      width: 0%;
+      background-color: var(--primary);
+      border-radius: 2px;
+      transition: width 0.3s ease-in-out;
+  }
+
+  /* --- DYNAMIC FONT SIZING CLASSES --- */
+  .q-text { 
+      font-size: var(--dynamic-size); 
+      font-weight: 500; 
+      margin: 0; 
+      line-height: 1.5; 
+      white-space: normal; 
+      word-wrap: break-word;
+  }
+
+  /* Context box adjustment to remove gap */
+  .q-text > .context-box:first-child {
+      margin-top: 0;
+  }
+
+  .context-box {
+      background-color: #f0f4f8;
+      border-left: 4px solid var(--info);
+      padding: 10px 12px; 
+      border-radius: 8px;
+      margin-bottom: 8px; 
+      font-size: calc(var(--dynamic-size) * 0.9);
+      line-height: 1.45;
+      color: var(--text-light);
+      white-space: normal; 
+  }
+  body.dark-mode .context-box {
+      background-color: rgba(36, 129, 204, 0.15);
+      color: var(--text-dark);
+      border-left-color: var(--info);
+  }
+
+  .q-context-preview {
+      font-size: calc(var(--dynamic-size) * 0.9);
+      margin-bottom: 12px;
+      padding: 10px;
+      background: rgba(0,0,0,0.03);
+      border-radius: 8px;
+      white-space: normal; 
+  }
+  body.dark-mode .q-context-preview {
+      background: rgba(255,255,255,0.05);
+  }
+
+  .option-btn {
+    width: 100%; text-align: left;
+    border: 1px solid var(--border-light);
+    background: transparent; color: inherit;
+    border-radius: 10px; padding: 12px 16px;
+    margin: 6px 0; transition: .2s ease all; 
+    font-size: var(--dynamic-size);
+    cursor: pointer;
+    touch-action: manipulation;
+    user-select: none;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    white-space: normal; 
+  }
+  body.dark-mode .option-btn { border-color: var(--border-dark); }
+  .option-btn:hover { border-color: var(--primary); background: rgba(106,90,249, 0.05); transform: translateY(-1px); }
+  .option-btn.selected { background: var(--secondary); color: #fff; border-color: var(--secondary); }
+  .option-btn.correct { background: var(--success) !important; color: #fff; border-color: var(--success) !important; }
+  .option-btn.incorrect { background: var(--danger) !important; color: #fff; border-color: var(--danger) !important; }
+
+  /* User Selection Checkmark */
+  .user-check {
+      font-size: 1.1em;
+      margin-left: 10px;
+      display: none; 
+      flex-shrink: 0;
+  }
+  .option-btn.selected .user-check { display: inline-block; }
+
+  .explanation {
+    background: rgba(106,90,249, 0.05);
+    border-left: 4px solid var(--primary);
+    border-radius: 8px; padding: 12px; margin-top: 15px;
+    font-size: calc(var(--dynamic-size) * 0.9);
+    white-space: normal; 
+  }
+
+  /* --- STATIC FONT SIZING (Header, Meta, Nav) --- */
+  .q-meta-container {
+      display: inline-flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+  }
+  /* Meta text keeps static size */
+  .q-meta-container h5 { font-size: 1.1rem; margin-bottom: 0; } 
+
+  .q-timer {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: rgba(106,90,249, 0.1);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+  }
+
+  /* Marking Indicator Style */
+  .q-marks {
+      font-size: 0.8rem;
+      font-weight: 600;
+      background: rgba(0,0,0,0.05);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-light);
+  }
+  body.dark-mode .q-marks { background: rgba(255,255,255,0.1); color: var(--text-dark); }
+
+  /* Marks Colors for Review Mode */
+  .q-marks.positive { color: var(--success); background: rgba(32, 201, 151, 0.1); }
+  .q-marks.negative { color: var(--danger); background: rgba(230, 57, 70, 0.1); }
+
+  .q-accuracy {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--success);
+      background: rgba(32, 201, 151, 0.1);
+      padding: 3px 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+  }
+  body.dark-mode .q-timer { color: #9d8fff; background: rgba(106,90,249, 0.2); }
+  body.dark-mode .q-accuracy { color: #4ade80; background: rgba(32, 201, 151, 0.2); }
+
+  /* --- Fixed Bottom Navigation (ABSOLUTE POSITIONING FIX) --- */
+  .quiz-nav-buttons { 
+      position: absolute; 
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex; 
+      justify-content: space-between; 
+      margin: 0;
+      padding: 15px 20px;
+      border-top: 1px solid var(--border-light);
+      background: var(--surface-light);
+      z-index: 500;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+  }
+  body.dark-mode .quiz-nav-buttons {
+      border-top-color: var(--border-dark);
+      background: var(--surface-dark);
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+  }
+  .btn-nav { padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 0.95rem; touch-action: manipulation; }
+
+  /* --- Palette Grid --- */
+  .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(42px, 1fr)); gap: 8px; }
+  .q-tile {
+    width: 100%; aspect-ratio: 1 / 1;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border-light);
+    border-radius: 8px; font-weight: 600; cursor: pointer;
+    transition: .2s ease all;
+    font-size: 0.9rem;
+    user-select: none;
+  }
+  body.dark-mode .q-tile { border-color: var(--border-dark); }
+  .q-tile:hover { transform: scale(1.08); }
+  .q-tile.current { background-color: var(--primary); color: #fff; border-color: var(--primary); }
+  .q-tile.answered { background-color: var(--success); color: #fff; border-color: var(--success); }
+  .q-tile.marked { box-shadow: 0 0 0 2px var(--info) inset; }
+  .q-tile.review-correct { background-color: var(--success); color: #fff; border-color: transparent; }
+  .q-tile.review-incorrect { background-color: var(--danger); color: #fff; border-color: transparent; }
+  .q-tile.review-unattempted { background-color: var(--warning); color: #fff; border-color: transparent; }
+
+  /* Palette Legend specific styles to fix color issues */
+  .palette-legend-box {
+      width: 14px; height: 14px;
+      border-radius: 3px;
+      margin-right: 5px;
+      border: 1px solid var(--border-light);
+  }
+  body.dark-mode .palette-legend-box { border-color: var(--border-dark); }
+  .palette-legend-box.visit { background: transparent; }
+  .palette-legend-box.done { background: var(--success); border-color: var(--success); }
+  .palette-legend-box.mark { background: transparent; border-color: var(--info); box-shadow: 0 0 0 2px var(--info) inset; }
+  .palette-legend-box.curr { background: var(--primary); border-color: var(--primary); }
+
+  /* --- Results View --- */
+  .results-container { text-align: center; }
+  .final-score { font-size: 4rem; font-weight: 800; color: var(--primary); }
+  .results-tabs .nav-link { color: inherit; opacity: 0.7; }
+  .results-tabs .nav-link.active { color: var(--primary); font-weight: 600; opacity: 1; border-bottom: 2px solid var(--primary); border-radius: 0; background: none; }
+  .chart-container { height: 250px; }
+
+  /* Leaderboard Styles */
+  .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
+  .leaderboard-table th, .leaderboard-table td { padding: 10px; text-align: left; border-bottom: 1px solid var(--border-light); }
+  body.dark-mode .leaderboard-table th, body.dark-mode .leaderboard-table td { border-bottom-color: var(--border-dark); }
+  .leaderboard-table th { font-weight: 600; opacity: 0.8; }
+  .rank-1 { color: #FFD700; font-weight: bold; }
+  .rank-2 { color: #C0C0C0; font-weight: bold; }
+  .rank-3 { color: #CD7F32; font-weight: bold; }
+
+  /* --- Header Action Buttons --- */
+  .header-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-grow: 1;
+    gap: 5px;
+  }
+  .action-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-light);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .action-btn:hover {
+    transform: scale(1.1);
+    background-color: rgba(0,0,0,0.05);
+  }
+  body.dark-mode .action-btn {
+    color: var(--text-dark);
+  }
+  body.dark-mode .action-btn:hover {
+    background-color: rgba(255,255,255,0.1);
+  }
+
+  /* Single Font Button Style */
+  #fontToggleBtn {
+      font-weight: 700;
+      font-family: serif;
+      width: auto;
+      padding: 0 10px;
+  }
+
+  #languageSwitch button {
+    font-weight: 700;
+    min-width: 50px;
+    padding: 0 5px;
+    height: 36px;
+    border-radius: 8px;
+    background-color: transparent;
+    border: 1px solid var(--border-light);
+    color: var(--text-light);
+    box-shadow: none;
+    transition: all 0.2s ease;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  body.dark-mode #languageSwitch button {
+    background-color: transparent;
+    border-color: var(--border-dark);
+    color: var(--text-dark);
+  }
+  #languageSwitch button:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+  }
+
+  /* --- Responsive Design (Mobile) --- */
+  @media (max-width: 992px) {
+    
+    .header-timer { font-size: 1rem; margin-left: 10px; }
+
+    .quiz-main-header {
+        padding: 15px 15px 10px 15px; 
+    }
+
+    /* Mobile Fixed Bottom Nav handled by main absolute styling */
+    .quiz-nav-buttons {
+        padding: 15px 15px;
+    }
+
+    .home-card, .results-container {
+        border-radius: 12px; 
+        margin: 20px;
+        width: auto;
+    }
+
+    /* Ensure home-card overrides general mobile margin rules to stay full width */
+    .home-card {
+        margin: 0;
+        border-radius: 0;
+        width: 100%;
+    }
+  }
+  
+  /* --- Image Optimization for Telegram Content --- */
+  img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 10px auto;
+      border-radius: 8px;
+  }
+</style>
+</head>
+<body>
+
+<div id="home-screen">
+    <h1 class="home-header">Night™</h1>
+    <div class="card-ui home-card">
+        <div class="home-content-wrapper">
+            <h2>Test</h2>
+            <div class="test-details">
+                <p><span>Topic</span> <span id="homeTopic">Topic Name Here</span></p>
+                <p><span>Q.</span> <span id="homeQuestions">0</span></p>
+                <p><span>Timer</span> <span id="homeTime">0 Minutes</span></p>
+                <p><span>N.Mark</span> <span id="homeNegative">0</span></p>
+            </div>
+            <button id="startQuizBtn">Start</button>
+        </div>
+    </div>
+    <footer class="home-footer">
+        <!-- Clickable Links -->
+        <a href="https://t.me/AI_quiz_bot_pro" target="_blank">@AI_quiz_bot_pro</a>
+        <a href="https://t.me/elite_quiz_bot" target="_blank">@elite_quiz_bot</a>
+    </footer>
+</div>
+
+
+<div id="quiz-screen" style="display: none;">
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/269/269.wav" preload="auto"></audio>
+    <audio id="swipeSound" src="https://assets.mixkit.co/active_storage/sfx/1897/1897.wav" preload="auto"></audio>
+    <audio id="correctSound" src="https://assets.mixkit.co/active_storage/sfx/2870/2870.wav" preload="auto"></audio>
+    <audio id="wrongSound" src="https://assets.mixkit.co/active_storage/sfx/2964/2964.wav" preload="auto"></audio>
+
+    <div class="quiz-layout">
+      <!-- MAIN CONTENT AREA -->
+      <main class="quiz-main">
+        <div class="quiz-main-header">
+          <!-- Spacer or Logo -->
+          <div class="quiz-brand fw-bold text-primary m-0" style="font-size: 1.1rem;">N I G H T</div>
+
+          <!-- MAIN HEADER TIMER (Fullscreen Toggle Integrated) -->
+          <div class="header-timer" id="headerTimerDisp" title="Click to Toggle Fullscreen">00:00</div>
+
+          <div class="header-actions">
+              <div id="languageSwitch">
+                  <button id="langToggleBtn">BILI</button>
+              </div>
+              <button class="action-btn" id="fontToggleBtn" aria-label="Cycle font size">Aa+</button>
+              <button class="action-btn" id="themeToggle" aria-label="Toggle theme"><i class="fas fa-moon"></i></button>
+          </div>
+
+          <!-- PALETTE TOGGLE (Visible on ALL devices) -->
+          <button class="palette-trigger ms-2" id="openPaletteBtn" aria-label="Open Question Palette">
+              <i class="fas fa-th-large"></i>
+          </button>
+        </div>
+
+        <div class="thin-progress-bar">
+            <div id="thinProgressBarInner" class="thin-progress-bar-inner"></div>
+        </div>
+
+        <div class="quiz-content-area">
+            <div id="questionArea"></div>
+            <div id="resultsContainer" class="results-container card-ui" style="display: none;"></div>
+        </div>
+
+        <div id="quizNav" class="quiz-nav-buttons" style="display: none;"></div>
+
+      </main>
+    </div>
+
+    <!-- POPUP MODAL PALETTE (Replaces Sidebar) -->
+    <div class="palette-modal" id="paletteModal">
+        <div class="palette-content-box">
+            <div class="palette-header">
+                <h5 class="fw-bold m-0">Quiz Control</h5>
+                <button class="palette-trigger" id="closePaletteBtn"><i class="fas fa-times"></i></button>
+            </div>
+
+            <div class="palette-body">
+                <!-- Integrated Timer & Stats Section -->
+                <div class="sidebar-section">
+                    <div class="timer-box mb-3">
+                        <div class="timer-display"><span id="minutes">00</span>:<span id="seconds">00</span></div>
+                        <div class="progress mt-2" style="height: 6px;">
+                          <div id="timeProgress" class="progress-bar bg-primary" style="width:100%"></div>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="value correct" id="statAnswered">0</div>
+                            <div class="label">Answered</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value unattempted" id="statUnanswered">0</div>
+                            <div class="label">Left</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="value marked" id="statMarked">0</div>
+                            <div class="label">Marked</div>
+                        </div>
+                         <div class="stat-item">
+                            <div class="value" id="statTotal">0</div>
+                            <div class="label">Total</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Palette Grid -->
+                <h6 class="fw-bold mb-3 mt-2">Question Palette</h6>
+                <div class="palette-grid" id="qList"></div>
+            </div>
+
+            <div class="palette-footer">
+                <div class="d-flex flex-wrap gap-2 small text-muted mb-3 justify-content-center">
+                    <div class="d-flex align-items-center"><div class="palette-legend-box visit"></div> Visit</div>
+                    <div class="d-flex align-items-center"><div class="palette-legend-box done"></div> Done</div>
+                    <div class="d-flex align-items-center"><div class="palette-legend-box mark"></div> Mark</div>
+                    <div class="d-flex align-items-center"><div class="palette-legend-box curr"></div> Curr</div>
+                </div>
+                <button id="submitBtn" class="btn btn-primary w-100 py-2 fw-bold">
+                    <i class="fas fa-paper-plane me-2"></i>Submit Quiz
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+// Placeholder quizData, will be replaced by Python
+const quizData = {
+  "settings": {
+    "topic": "Constitutional amendments\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164{Instructions: \u27bb Click on the BILI icon- To switch between Kannada and English \u3164\u3164\u3164\u27bb At the right end side- Question pallet \u229e\u3164\u3164\u3164 \u27bb The Submit button is Below the Question Numbers panel in Question pallet\u3164\u3164\u3164\u3164 \u27bb For explanations Click on the 'review answers' after submission}",
+    "totalTimeSec": 3600,
+    "negativeMarkPerWrong": 0.25
+  },
+  "questions": [
+    {
+      "text": "<b>Q1.</b> Which article of the Indian Constitution deals with the power of Parliament to amend the Constitution? / \u0cad\u0cbe\u0cb0\u0ca4\u0ca6 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0ca6 \u0caf\u0cbe\u0cb5 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0cc1 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0cae\u0cbe\u0ca1\u0cc1\u0cb5 \u0cb8\u0c82\u0cb8\u0ca4\u0ccd\u0ca4\u0cbf\u0ca8 \u0c85\u0ca7\u0cbf\u0c95\u0cbe\u0cb0\u0c95\u0ccd\u0c95\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0cc6?",
+      "options": [
+        "352",
+        "360",
+        "368",
+        "370"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: Article 368 provides the procedure and power for constitutional amendments. Option (a): Article 352 for National Emergency. Option (b): Article 360 for Financial Emergency. Option (d): Article 370 for Special Status of J&amp;K. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 368\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0cc1 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0c97\u0cb3 \u0c95\u0cbe\u0cb0\u0ccd\u0caf\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c85\u0ca7\u0cbf\u0c95\u0cbe\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c92\u0ca6\u0c97\u0cbf\u0cb8\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6. \u0c86\u0caf\u0ccd\u0c95\u0cc6 2: 352\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0cc1 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb8\u0ccd\u0ca5\u0cbf\u0ca4\u0cbf\u0c97\u0cbe\u0c97\u0cbf. \u0c86\u0caf\u0ccd\u0c95\u0cc6 3: 360\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0cc1 \u0c86\u0cb0\u0ccd\u0ca5\u0cbf\u0c95 \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb8\u0ccd\u0ca5\u0cbf\u0ca4\u0cbf\u0c97\u0cbe\u0c97\u0cbf. 4: 370 \u0c9c\u0cae\u0ccd\u0cae\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c95\u0cbe\u0cb6\u0ccd\u0cae\u0cc0\u0cb0\u0ca6 \u0cb5\u0cbf\u0cb6\u0cc7\u0cb7 \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0cae\u0cbe\u0ca8\u0c95\u0ccd\u0c95\u0cbe\u0c97\u0cbf.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q2.</b> Which amendment made it compulsory for the President to give assent to a Constitutional Amendment Bill? / \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0cae\u0cb8\u0cc2\u0ca6\u0cc6\u0c97\u0cc6 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf \u0c85\u0c82\u0c95\u0cbf\u0ca4 \u0ca8\u0cc0\u0ca1\u0cc1\u0cb5\u0cc1\u0ca6\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0c95\u0ca1\u0ccd\u0ca1\u0cbe\u0caf\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 24th Amendment (1971) made it obligatory for the President to give assent to amendment bills passed by Parliament. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1971) \u0cb8\u0c82\u0cb8\u0ca4\u0ccd\u0ca4\u0cc1 \u0c85\u0c82\u0c97\u0cc0\u0c95\u0cb0\u0cbf\u0cb8\u0cbf\u0ca6 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0cae\u0cb8\u0cc2\u0ca6\u0cc6\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf\u0c97\u0cb3\u0cc1 \u0c85\u0c82\u0c95\u0cbf\u0ca4 \u0ca8\u0cc0\u0ca1\u0cc1\u0cb5\u0cc1\u0ca6\u0ca8\u0ccd\u0ca8\u0cc1 \u0c95\u0ca1\u0ccd\u0ca1\u0cbe\u0caf\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q3.</b> Which constitutional amendment is widely known as the &quot;Mini Constitution&quot; of India? / \u0cad\u0cbe\u0cb0\u0ca4\u0ca6 \u0caf\u0cbe\u0cb5 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 &quot;\u0cae\u0cbf\u0ca8\u0cbf \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8&quot; \u0c8e\u0c82\u0ca6\u0cc1 \u0cb5\u0ccd\u0caf\u0cbe\u0caa\u0c95\u0cb5\u0cbe\u0c97\u0cbf \u0c95\u0cb0\u0cc6\u0caf\u0cb2\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6?",
+      "options": [
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "7th Amendment / 7\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 3,
+      "explanation": "Option (d) is correct: The 42nd Amendment (1976) introduced vast changes across various parts, earning the title &quot;Mini Constitution&quot;. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 4 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1976) \u0cb5\u0cbf\u0cb5\u0cbf\u0ca7 \u0cad\u0cbe\u0c97\u0c97\u0cb3\u0cb2\u0ccd\u0cb2\u0cbf \u0cb5\u0ccd\u0caf\u0cbe\u0caa\u0c95 \u0cac\u0ca6\u0cb2\u0cbe\u0cb5\u0ca3\u0cc6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca4\u0c82\u0ca6\u0cbf\u0ca4\u0cc1, \u0c86\u0ca6\u0ccd\u0ca6\u0cb0\u0cbf\u0c82\u0ca6 \u0c87\u0ca6\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0cbf\u0ca8\u0cbf \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0c8e\u0c82\u0ca6\u0cc1 \u0c95\u0cb0\u0cc6\u0caf\u0cb2\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q4.</b> Which amendment provided that Fundamental Rights under Articles 20 and 21 cannot be suspended even during Emergency? / \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb8\u0ccd\u0ca5\u0cbf\u0ca4\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cc2 20 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 21\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0c97\u0cb3 \u0c85\u0ca1\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf\u0ca8 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0cc1\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0cae\u0cbe\u0ca8\u0ca4\u0cc1\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cb2\u0cbe\u0c97\u0ca6\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0ca4\u0cbf\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "38th Amendment / 38\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 44th Amendment (1978) ensured that the right to life and personal liberty (20 &amp; 21) remains non-suspendable. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1978) \u0c9c\u0cc0\u0cb5\u0cbf\u0cb8\u0cc1\u0cb5 \u0cb9\u0c95\u0ccd\u0c95\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb5\u0cc8\u0caf\u0c95\u0ccd\u0ca4\u0cbf\u0c95 \u0cb8\u0ccd\u0cb5\u0cbe\u0ca4\u0c82\u0ca4\u0ccd\u0cb0\u0ccd\u0caf\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0cae\u0cbe\u0ca8\u0ca4\u0cc1\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cb2\u0cbe\u0c97\u0ca6\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0c96\u0cbe\u0ca4\u0cb0\u0cbf\u0caa\u0ca1\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q5.</b> Which constitutional amendment act introduced the Ninth Schedule to protect land reform laws from judicial review? / \u0cad\u0cc2 \u0cb8\u0cc1\u0ca7\u0cbe\u0cb0\u0ca3\u0cbe \u0c95\u0cbe\u0ca8\u0cc2\u0ca8\u0cc1\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0c82\u0c97 \u0cb5\u0cbf\u0cae\u0cb0\u0ccd\u0cb6\u0cc6\u0caf\u0cbf\u0c82\u0ca6 \u0cb0\u0c95\u0ccd\u0cb7\u0cbf\u0cb8\u0cb2\u0cc1 \u0caf\u0cbe\u0cb5 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 9\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c9a\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "7th Amendment / 7\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 1st Amendment Act (1951) added the Ninth Schedule to shield land reform and zamindari abolition laws from judicial scrutiny on the grounds of violating Fundamental Rights. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 (1951) \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0cc1\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c89\u0cb2\u0ccd\u0cb2\u0c82\u0c98\u0cbf\u0cb8\u0cbf\u0ca6 \u0c86\u0ca7\u0cbe\u0cb0\u0ca6 \u0cae\u0cc7\u0cb2\u0cc6 \u0cad\u0cc2 \u0cb8\u0cc1\u0ca7\u0cbe\u0cb0\u0ca3\u0cc6 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c9c\u0cae\u0cc0\u0ca8\u0ccd\u0ca6\u0cbe\u0cb0\u0cbf \u0ca8\u0cbf\u0cb0\u0ccd\u0cae\u0cc2\u0cb2\u0ca8\u0cc6 \u0c95\u0cbe\u0ca8\u0cc2\u0ca8\u0cc1\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0c82\u0c97 \u0caa\u0cb0\u0cbf\u0cb6\u0cc0\u0cb2\u0ca8\u0cc6\u0caf\u0cbf\u0c82\u0ca6 \u0cb0\u0c95\u0ccd\u0cb7\u0cbf\u0cb8\u0cb2\u0cc1 9\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q6.</b> Which amendment abolished the classification of states into Part A, B, C, and D? / \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c97\u0cb3 \u0c8e, \u0cac\u0cbf, \u0cb8\u0cbf \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0ca1\u0cbf \u0cad\u0cbe\u0c97\u0c97\u0cb3 \u0cb5\u0cb0\u0ccd\u0c97\u0cc0\u0c95\u0cb0\u0ca3\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0cb0\u0ca6\u0ccd\u0ca6\u0cc1\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "7th Amendment / 7\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "4th Amendment / 4\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "10th Amendment / 10\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 7th Amendment (1956) implemented the State Reorganisation Act, replacing the four-fold classification with 14 states and 6 union territories. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 7\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1956) \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c97\u0cb3 \u0cae\u0cb0\u0cc1\u0cb8\u0c82\u0c98\u0c9f\u0ca8\u0cc6 \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c9c\u0cbe\u0cb0\u0cbf\u0c97\u0cc6 \u0ca4\u0c82\u0ca6\u0cbf\u0ca4\u0cc1, \u0ca8\u0cbe\u0cb2\u0ccd\u0c95\u0cc1 \u0caa\u0c9f\u0ccd\u0c9f\u0cc1 \u0cb5\u0cb0\u0ccd\u0c97\u0cc0\u0c95\u0cb0\u0ca3\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 14 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c97\u0cb3\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 6 \u0c95\u0cc7\u0c82\u0ca6\u0ccd\u0cb0\u0cbe\u0ca1\u0cb3\u0cbf\u0ca4 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c97\u0cb3\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cac\u0ca6\u0cb2\u0cbe\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "\n            <div class=\"context-box\">\n                Q7. \ud83d\udca0 Match the following amendments with the official languages they added to the 8th Schedule: / \u00bb \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0cb5\u0cc1 8\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf\u0c97\u0cc6 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca6 \u0c85\u0ca7\u0cbf\u0c95\u0cc3\u0ca4 \u0cad\u0cbe\u0cb7\u0cc6\u0c97\u0cb3\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0cb8\u0cbf:<br><br>\u3010List I\u3011 \u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164 \u3010List II\u3011 <br><br>\u2502A. 21st Amendment \u2502\u3164 \u25021. Konkani, Manipuri, Nepali \u2502 \u3164<br><br>\u2502B. 71st Amendment \u2502\u3164 \u25022. Odia (Spelling change) \u2502<br><br>\u2502C. 92nd Amendment \u2502\u3164 \u25023. Sindhi \u2502\u3164<br><br>\u2502D. 96th Amendment \u2502\u3164 \u25024. Bodo, Dogri, Maithili, Santhali \u2502<br><br>\u3164\u3164\u3164\u3164\u3164<br>\u3010\u0caa\u0c9f\u0ccd\u0c9f\u0cbf I\u3011 \u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164 \u3010\u0caa\u0c9f\u0ccd\u0c9f\u0cbf II\u3011 <br><br>\u2502A. 21\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164 \u3164 \u25021. \u0c95\u0cca\u0c82\u0c95\u0ca3\u0cbf, \u0cae\u0ca3\u0cbf\u0caa\u0cc1\u0cb0\u0cbf, \u0ca8\u0cc7\u0caa\u0cbe\u0cb3\u0cbf \u2502<br><br>\u2502B. 71\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164\u3164 \u2502 2. \u0c92\u0ca1\u0cbf\u0caf\u0cbe (\u0cb9\u0cc6\u0cb8\u0cb0\u0cc1 \u0cac\u0ca6\u0cb2\u0cbe\u0cb5\u0ca3\u0cc6) \u2502<br><br>\u2502C. 92\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164 \u2502 3. \u0cb8\u0cbf\u0c82\u0ca7\u0cbf \u2502<br><br>\u2502D. 96\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164\u3164 \u2502 4. \u0cac\u0ccb\u0ca1\u0ccb, \u0ca1\u0ccb\u0c97\u0ccd\u0cb0\u0cbf, \u0cae\u0cc8\u0ca5\u0cbf\u0cb2\u0cbf, \u0cb8\u0c82\u0ca4\u0cbe\u0cb2\u0cbf \u2502<br>\u3164\u3164\u3164\u3164\u3164\n            </div>\n            <b>Q7.</b> Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "A-1, B-3, C-4, D-2",
+        "A-3, B-1, C-4, D-2",
+        "A-3, B-4, C-1, D-2",
+        "A-2, B-1, C-3, D-4"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: 21st Amendment (1967) added Sindhi as the 15th language. 71st Amendment (1992) added Konkani, Manipuri, and Nepali. 92nd Amendment (2003) added Bodo, Dogri, Maithili, and Santhali. 96th Amendment (2011) changed the spelling of &#x27;Oriya&#x27; to &#x27;Odia&#x27; (\u0c92\u0ca1\u0cbf\u0caf\u0cbe). | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 21\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (1967) \u0cb8\u0cbf\u0c82\u0ca7\u0cbf (Sindhi) \u0cad\u0cbe\u0cb7\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 15\u0ca8\u0cc7 \u0cad\u0cbe\u0cb7\u0cc6\u0caf\u0cbe\u0c97\u0cbf \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. 71\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (1992) \u0c95\u0cca\u0c82\u0c95\u0ca3\u0cbf, \u0cae\u0ca3\u0cbf\u0caa\u0cc1\u0cb0\u0cbf \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0ca8\u0cc7\u0caa\u0cbe\u0cb3\u0cbf (Konkani, Manipuri, and Nepali) \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. 92\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (2003) \u0cac\u0ccb\u0ca1\u0ccb, \u0ca1\u0ccb\u0c97\u0ccd\u0cb0\u0cbf, \u0cae\u0cc8\u0ca5\u0cbf\u0cb2\u0cbf \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb8\u0c82\u0ca4\u0cbe\u0cb2\u0cbf (BDSM) \u0cad\u0cbe\u0cb7\u0cc6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. 96\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (2011) &#x27;\u0c92\u0cb0\u0cbf\u0caf\u0cbe&#x27; \u0cb9\u0cc6\u0cb8\u0cb0\u0ca8\u0ccd\u0ca8\u0cc1 &#x27;\u0c92\u0ca1\u0cbf\u0caf\u0cbe&#x27; (Odia) \u0c8e\u0c82\u0ca6\u0cc1 \u0cac\u0ca6\u0cb2\u0cbe\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "\n            <div class=\"context-box\">\n                Q8. \u29bf Consider the following statements regarding the 7th Constitutional Amendment Act, 1956: / \u29bf 1956 \u0cb0 7\u0ca8\u0cc7 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0c97\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0c82\u0ca4\u0cc6 \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c97\u0ca3\u0cbf\u0cb8\u0cbf:<br><br>i. It introduced the system of Union Territories for the first time in India. / i. \u0c87\u0ca6\u0cc1 \u0cad\u0cbe\u0cb0\u0ca4\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0cae\u0cca\u0ca6\u0cb2 \u0cac\u0cbe\u0cb0\u0cbf\u0c97\u0cc6 \u0c95\u0cc7\u0c82\u0ca6\u0ccd\u0cb0\u0cbe\u0ca1\u0cb3\u0cbf\u0ca4 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c97\u0cb3 \u0cb5\u0ccd\u0caf\u0cb5\u0cb8\u0ccd\u0ca5\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c9a\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.<br><br>ii. It mandated that every state in India must establish a Legislative Council. / ii. \u0cad\u0cbe\u0cb0\u0ca4\u0ca6 \u0caa\u0ccd\u0cb0\u0ca4\u0cbf\u0caf\u0cca\u0c82\u0ca6\u0cc1 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0cb5\u0cc2 \u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0caa\u0cb0\u0cbf\u0cb7\u0ca4\u0ccd\u0ca4\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0cbf\u0cb8\u0cac\u0cc7\u0c95\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0c87\u0ca6\u0cc1 \u0c95\u0ca1\u0ccd\u0ca1\u0cbe\u0caf\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.\n            </div>\n            <b>Q8.</b> Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "i only / i \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "ii only / ii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "Both i and ii / i \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 ii \u0c8e\u0cb0\u0ca1\u0cc2",
+        "Neither i nor ii / i \u0c85\u0ca5\u0cb5\u0cbe ii \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc2 \u0c85\u0cb2\u0ccd\u0cb2"
+      ],
+      "correctIndex": 0,
+      "explanation": "Statement i is correct: The 7th Amendment (1956) abolished the classification of states (Part A, B, C, D) and established 14 states and 6 Union Territories (\u0c95\u0cc7\u0c82\u0ca6\u0ccd\u0cb0\u0cbe\u0ca1\u0cb3\u0cbf\u0ca4 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c97\u0cb3\u0cc1). \u3164\u3164\u27bb Statement ii is incorrect: The amendment did not mandate Legislative Councils (\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0caa\u0cb0\u0cbf\u0cb7\u0ca4\u0ccd\u0ca4\u0cc1); under Article 169, their creation or abolition is optional and depends on the resolution of the respective State Assembly. | / \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 i \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 7\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1956) \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c97\u0cb3 \u0cb5\u0cb0\u0ccd\u0c97\u0cc0\u0c95\u0cb0\u0ca3\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 (A, B, C, D \u0cad\u0cbe\u0c97\u0c97\u0cb3\u0cc1) \u0cb0\u0ca6\u0ccd\u0ca6\u0cc1\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 14 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c97\u0cb3\u0cc1 \u0cb9\u0cbe\u0c97\u0cc2 6 \u0c95\u0cc7\u0c82\u0ca6\u0ccd\u0cb0\u0cbe\u0ca1\u0cb3\u0cbf\u0ca4 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 (Union Territories) \u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 ii \u0ca4\u0caa\u0ccd\u0caa\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: \u0caa\u0ccd\u0cb0\u0ca4\u0cbf\u0caf\u0cca\u0c82\u0ca6\u0cc1 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c95\u0ccd\u0c95\u0cc2 \u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0caa\u0cb0\u0cbf\u0cb7\u0ca4\u0ccd\u0ca4\u0cc1 (Legislative Council) \u0c87\u0cb0\u0cac\u0cc7\u0c95\u0cc6\u0c82\u0ca6\u0cc1 \u0c88 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6 \u0c95\u0ca1\u0ccd\u0ca1\u0cbe\u0caf\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0cb2\u0ccd\u0cb2; 169\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf \u0caa\u0ccd\u0cb0\u0c95\u0cbe\u0cb0, \u0c85\u0cb5\u0cc1\u0c97\u0cb3 \u0cb0\u0c9a\u0ca8\u0cc6 \u0c85\u0ca5\u0cb5\u0cbe \u0cb0\u0ca6\u0ccd\u0ca6\u0ca4\u0cbf\u0caf\u0cc1 \u0c86\u0caf\u0cbe \u0cb0\u0cbe\u0c9c\u0ccd\u0caf \u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cb8\u0cad\u0cc6\u0caf \u0ca8\u0cbf\u0cb0\u0ccd\u0ca3\u0caf\u0ca6 \u0cae\u0cc7\u0cb2\u0cc6 \u0c85\u0cb5\u0cb2\u0c82\u0cac\u0cbf\u0ca4\u0cb5\u0cbe\u0c97\u0cbf\u0cb0\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q9.</b> The elective strength of Lok Sabha was increased from 525 to 545 by? / \u0cb2\u0ccb\u0c95\u0cb8\u0cad\u0cc6\u0caf \u0c9a\u0cc1\u0ca8\u0cbe\u0caf\u0cbf\u0ca4 \u0cb8\u0ca6\u0cb8\u0ccd\u0caf\u0cb0 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 525 \u0cb0\u0cbf\u0c82\u0ca6 545 \u0c95\u0ccd\u0c95\u0cc6 \u0cb9\u0cc6\u0c9a\u0ccd\u0c9a\u0cbf\u0cb8\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc1?",
+      "options": [
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "31st Amendment / 31\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "7th Amendment / 7\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 31st Amendment (1973) increased the Lok Sabha elective seats from 525 to 545. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 31\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (1973) \u0cb2\u0ccb\u0c95\u0cb8\u0cad\u0cc6\u0caf \u0c9a\u0cc1\u0ca8\u0cbe\u0caf\u0cbf\u0ca4 \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 525 \u0cb0\u0cbf\u0c82\u0ca6 545 \u0c95\u0ccd\u0c95\u0cc6 \u0cb9\u0cc6\u0c9a\u0ccd\u0c9a\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q10.</b> Which amendment provided that the President is bound by the advice of the Cabinet? / \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf\u0cae\u0c82\u0ca1\u0cb2\u0ca6 \u0cb8\u0cb2\u0cb9\u0cc6\u0c97\u0cc6 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf\u0caf\u0cc1 \u0cac\u0ca6\u0ccd\u0ca7\u0cb0\u0cbe\u0c97\u0cbf\u0cb0\u0cac\u0cc7\u0c95\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0ca4\u0cbf\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 42nd Amendment (1976) made the advice of the Council of Ministers binding on the President. Option (a): 44th Amendment added that the President can return advice once for reconsideration. Option (b): Related to amendment bills. Option (d): 1st Amendment related to land reforms. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (1976) \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf\u0cae\u0c82\u0ca1\u0cb2\u0ca6 (Council of Ministers) \u0cb8\u0cb2\u0cb9\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf\u0c97\u0cc6 \u0c95\u0ca1\u0ccd\u0ca1\u0cbe\u0caf\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. \u0c86\u0caf\u0ccd\u0c95\u0cc6 2: 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf\u0caf\u0cc1 \u0cb8\u0cb2\u0cb9\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c92\u0cae\u0ccd\u0cae\u0cc6 \u0cae\u0cb0\u0cc1\u0caa\u0cb0\u0cbf\u0cb6\u0cc0\u0cb2\u0ca8\u0cc6\u0c97\u0cc6 \u0c95\u0cb3\u0cc1\u0cb9\u0cbf\u0cb8\u0cac\u0cb9\u0cc1\u0ca6\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. \u0c86\u0caf\u0ccd\u0c95\u0cc6 3: 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0cae\u0cb8\u0cc2\u0ca6\u0cc6\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0cc6. \u0c86\u0caf\u0ccd\u0c95\u0cc6 4: 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0cad\u0cc2 \u0cb8\u0cc1\u0ca7\u0cbe\u0cb0\u0ca3\u0cc6\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0cc6.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q11.</b> Under which amendment was the &quot;Right to Property&quot; deleted from the list of Fundamental Rights? / \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf \u0c85\u0ca1\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf &#x27;\u0c86\u0cb8\u0ccd\u0ca4\u0cbf\u0caf \u0cb9\u0c95\u0ccd\u0c95\u0cc1&quot; \u0c85\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0cc1\u0c97\u0cb3 \u0caa\u0c9f\u0ccd\u0c9f\u0cbf\u0caf\u0cbf\u0c82\u0ca6 \u0ca4\u0cc6\u0c97\u0cc6\u0ca6\u0cc1\u0cb9\u0cbe\u0c95\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "25th Amendment / 25\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "40th Amendment / 40\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 44th Amendment (1978) removed Article 31 (Right to Property) and made it a legal right under Article 300A. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (1978) 31\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 (\u0c86\u0cb8\u0ccd\u0ca4\u0cbf\u0caf \u0cb9\u0c95\u0ccd\u0c95\u0cc1) \u0ca4\u0cc6\u0c97\u0cc6\u0ca6\u0cc1\u0cb9\u0cbe\u0c95\u0cbf\u0ca4\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c85\u0ca6\u0ca8\u0ccd\u0ca8\u0cc1 300\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf\u0caf \u0c85\u0ca1\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0c95\u0cbe\u0ca8\u0cc2\u0ca8\u0cc1\u0cac\u0ca6\u0ccd\u0ca7 \u0cb9\u0c95\u0ccd\u0c95\u0ca8\u0ccd\u0ca8\u0cbe\u0c97\u0cbf \u0cae\u0cbe\u0ca1\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "\n            <div class=\"context-box\">\n                Q12. \ud83d\udca0 Match the following recent amendments with their legislative purpose: / \u00bb \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c87\u0ca4\u0ccd\u0ca4\u0cc0\u0c9a\u0cbf\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0cb5\u0cc1\u0c97\u0cb3 \u0cb6\u0cbe\u0cb8\u0ca8\u0cbe\u0ca4\u0ccd\u0cae\u0c95 \u0c89\u0ca6\u0ccd\u0ca6\u0cc7\u0cb6\u0c97\u0cb3\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0cb8\u0cbf:<br><br>\u3010List I\u3011 \u3164 \u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164 \u3010List II\u3011 <br><br>\u2502A. 101st Amendment \u2502\u3164 \u25021. Women&#x27;s Reservation \u2502 \u3164<br><br>\u2502B. 103rd Amendment \u2502\u3164 \u25022. GST Implementation \u2502<br><br>\u2502C. 104th Amendment \u2502\u3164 \u25023. EWS Reservation \u2502\u3164<br><br>\u2502D. 106th Amendment \u2502\u3164 \u25024. Anglo-Indian seat removal \u2502<br><br>\u3164\u3164\u3164\u3164\u3164<br>\u3010\u0caa\u0c9f\u0ccd\u0c9f\u0cbf I\u3011\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164 \u3010\u0caa\u0c9f\u0ccd\u0c9f\u0cbf II\u3011 <br><br>\u2502A. 101\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164 \u3164 \u25021. \u0cae\u0cb9\u0cbf\u0cb3\u0cbe \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf \u2502<br><br>\u2502B. 103\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164\u3164 \u2502 2. \u0c9c\u0cbf.\u0c8e\u0cb8\u0ccd.\u0c9f\u0cbf \u0c85\u0ca8\u0cc1\u0cb7\u0ccd\u0ca0\u0cbe\u0ca8 \u2502<br><br>\u2502C. 104\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164 \u2502 3. EWS \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf \u2502<br><br>\u2502D. 106\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164 \u2502 4. \u0c86\u0c82\u0c97\u0ccd\u0cb2\u0ccb-\u0c87\u0c82\u0ca1\u0cbf\u0caf\u0ca8\u0ccd \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8 \u0cb0\u0ca6\u0ccd\u0ca6\u0ca4\u0cbf \u2502\n            </div>\n            <b>Q12.</b> Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "A-2, B-3, C-4, D-1",
+        "A-3, B-2, C-1, D-4",
+        "A-2, B-1, C-4, D-3",
+        "A-1, B-4, C-2, D-3"
+      ],
+      "correctIndex": 0,
+      "explanation": "\u3164\u27bb 101st Amendment (2016) introduced the Goods and Services Tax (GST). \u3164\u3164\u27bb 103rd Amendment (2019) provided 10% reservation for Economically Weaker Sections (EWS). \u3164\u3164\u27bb 104th Amendment (2020) extended SC/ST reservation but removed reserved seats for the Anglo-Indian community. \u3164\u3164\u27bb 106th Amendment (2023) provided 33% reservation for women in Lok Sabha and Assemblies. | / \u3164\u3164\u27bb 101\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (2016) \u0cb8\u0cb0\u0c95\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb8\u0cc7\u0cb5\u0cbe \u0ca4\u0cc6\u0cb0\u0cbf\u0c97\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 (GST) \u0caa\u0cb0\u0cbf\u0c9a\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb 103\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (2019) \u0c86\u0cb0\u0ccd\u0ca5\u0cbf\u0c95\u0cb5\u0cbe\u0c97\u0cbf \u0cb9\u0cbf\u0c82\u0ca6\u0cc1\u0cb3\u0cbf\u0ca6 \u0cb5\u0cb0\u0ccd\u0c97\u0c97\u0cb3\u0cbf\u0c97\u0cc6 (EWS) \u0cb6\u0cc7.10 \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf \u0c92\u0ca6\u0c97\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb 104\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (2020) SC/ST \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb5\u0cbf\u0cb8\u0ccd\u0ca4\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1 \u0c86\u0ca6\u0cb0\u0cc6 \u0c86\u0c82\u0c97\u0ccd\u0cb2\u0ccb-\u0c87\u0c82\u0ca1\u0cbf\u0caf\u0ca8\u0ccd (Anglo-Indian) \u0cb8\u0cae\u0cc1\u0ca6\u0cbe\u0caf\u0ca6 \u0cae\u0cc0\u0cb8\u0cb2\u0cc1 \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb0\u0ca6\u0ccd\u0ca6\u0cc1\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb 106\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (2023) \u0cb2\u0ccb\u0c95\u0cb8\u0cad\u0cc6 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cb8\u0cad\u0cc6\u0c97\u0cb3\u0cb2\u0ccd\u0cb2\u0cbf \u0cae\u0cb9\u0cbf\u0cb3\u0cc6\u0caf\u0cb0\u0cbf\u0c97\u0cc6 \u0cb6\u0cc7.33 \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 (Women&#x27;s Reservation) \u0ca8\u0cc0\u0ca1\u0cbf\u0ca4\u0cc1. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q13.</b> Elementary Education was made a Fundamental Right (Article 21A) by which amendment? / \u0caa\u0ccd\u0cb0\u0cbe\u0ca5\u0cae\u0cbf\u0c95 \u0cb6\u0cbf\u0c95\u0ccd\u0cb7\u0ca3\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf \u0cae\u0cc2\u0cb2\u0c95 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0ca8\u0ccd\u0ca8\u0cbe\u0c97\u0cbf (21\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf) \u0cae\u0cbe\u0ca1\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "93rd Amendment / 93\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "86th Amendment / 86\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "91st Amendment / 91\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 86th Amendment (2002) inserted Article 21A, ensuring free and compulsory education for children aged 6-14. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 86\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2002) 21\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1, 6-14 \u0cb5\u0cb0\u0ccd\u0cb7\u0ca6 \u0cae\u0c95\u0ccd\u0c95\u0cb3\u0cbf\u0c97\u0cc6 \u0c89\u0c9a\u0cbf\u0ca4 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c95\u0ca1\u0ccd\u0ca1\u0cbe\u0caf \u0cb6\u0cbf\u0c95\u0ccd\u0cb7\u0ca3\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c96\u0cbe\u0ca4\u0cb0\u0cbf\u0caa\u0ca1\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q14.</b> Which amendment restored the power of State Governments to identify and recognize SEBCs (Socially and Educationally Backward Classes) ? / SEBC (\u0cb8\u0cbe\u0cae\u0cbe\u0c9c\u0cbf\u0c95 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb6\u0cc8\u0c95\u0ccd\u0cb7\u0ca3\u0cbf\u0c95\u0cb5\u0cbe\u0c97\u0cbf \u0cb9\u0cbf\u0c82\u0ca6\u0cc1\u0cb3\u0cbf\u0ca6 \u0cb5\u0cb0\u0ccd\u0c97\u0c97\u0cb3\u0cc1) \u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c97\u0cc1\u0cb0\u0cc1\u0ca4\u0cbf\u0cb8\u0cc1\u0cb5 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cae\u0cbe\u0ca8\u0ccd\u0caf \u0cae\u0cbe\u0ca1\u0cc1\u0cb5 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf \u0cb8\u0cb0\u0ccd\u0c95\u0cbe\u0cb0\u0c97\u0cb3 \u0c85\u0ca7\u0cbf\u0c95\u0cbe\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0cae\u0cb0\u0cc1\u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "102nd Amendment / 102\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "103rd Amendment / 103\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "105th Amendment / 105\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "104th Amendment / 104\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 105th Amendment (2021) clarified that states can maintain their own &quot;State List&quot; of backward classes. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 105\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2021) \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c97\u0cb3\u0cc1 \u0cb9\u0cbf\u0c82\u0ca6\u0cc1\u0cb3\u0cbf\u0ca6 \u0cb5\u0cb0\u0ccd\u0c97\u0c97\u0cb3 \u0ca4\u0cae\u0ccd\u0cae\u0ca6\u0cc7 \u0c86\u0ca6 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf \u0caa\u0c9f\u0ccd\u0c9f\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca8\u0cbf\u0cb0\u0ccd\u0cb5\u0cb9\u0cbf\u0cb8\u0cac\u0cb9\u0cc1\u0ca6\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0cb8\u0ccd\u0caa\u0cb7\u0ccd\u0c9f\u0caa\u0ca1\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q15.</b> Fundamental Duties were added to the Indian Constitution through which amendment? / \u0cad\u0cbe\u0cb0\u0ca4\u0ca6 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0c95\u0ccd\u0c95\u0cc6 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0c95\u0cb0\u0ccd\u0ca4\u0cb5\u0ccd\u0caf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf \u0cae\u0cc2\u0cb2\u0c95 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "86th Amendment / 86\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "52nd Amendment / 52\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 42nd Amendment (1976) added Part IV-A and Article 51A containing 10 Fundamental Duties. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1976) 10 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0c95\u0cb0\u0ccd\u0ca4\u0cb5\u0ccd\u0caf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c92\u0cb3\u0c97\u0cca\u0c82\u0ca1\u0cbf\u0cb0\u0cc1\u0cb5 \u0cad\u0cbe\u0c97 IV-A \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 51\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q16.</b> The &quot;Anti-Defection Law&quot; was added to the Constitution as the 10th Schedule by? / \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0c95\u0ccd\u0c95\u0cc6 10\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf\u0caf\u0cbe\u0c97\u0cbf &#x27;&#x27;\u0caa\u0c95\u0ccd\u0cb7\u0cbe\u0c82\u0ca4\u0cb0 \u0cb5\u0cbf\u0cb0\u0ccb\u0ca7\u0cbf \u0c95\u0cbe\u0ca8\u0cc2\u0ca8\u0cc1&quot; \u0c85\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc1?",
+      "options": [
+        "91st Amendment / 91\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "52nd Amendment / 52\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 52nd Amendment (1985) introduced the 10th Schedule to prevent political instability. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 52\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1985) \u0cb0\u0cbe\u0c9c\u0c95\u0cc0\u0caf \u0c85\u0cb8\u0ccd\u0ca5\u0cbf\u0cb0\u0ca4\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca4\u0ca1\u0cc6\u0caf\u0cb2\u0cc1 10\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c9a\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q17.</b> The 91st Amendment Act limited the total number of ministers in the Council of Ministers to what percentage of the Lok Sabha strength? / 91\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf\u0cae\u0c82\u0ca1\u0cb2\u0ca6 \u0c92\u0c9f\u0ccd\u0c9f\u0cc1 \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf\u0c97\u0cb3 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb2\u0ccb\u0c95\u0cb8\u0cad\u0cc6\u0caf \u0cac\u0cb2\u0ca6 \u0c8e\u0cb7\u0ccd\u0c9f\u0cc1 \u0cb6\u0cc7\u0c95\u0ca1\u0cbe\u0c95\u0ccd\u0c95\u0cc6 \u0cb8\u0cc0\u0cae\u0cbf\u0ca4\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "10%",
+        "15%",
+        "12%",
+        "20%"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 91st Amendment (2003) restricted the size of the Council of Ministers to 15% of the total membership of the House. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 91\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2003) \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf\u0cae\u0c82\u0ca1\u0cb2\u0ca6 \u0c97\u0cbe\u0ca4\u0ccd\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0ca6\u0ca8\u0ca6 \u0c92\u0c9f\u0ccd\u0c9f\u0cc1 \u0cb8\u0ca6\u0cb8\u0ccd\u0caf\u0ca4\u0ccd\u0cb5\u0ca6 \u0cb6\u0cc7.15 \u0c95\u0ccd\u0c95\u0ccd\u0c95\u0cc6 \u0cb8\u0cc0\u0cae\u0cbf\u0ca4\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q18.</b> Which amendment act granted constitutional status and protection to Co-operative Societies? / \u0cb8\u0cb9\u0c95\u0cbe\u0cb0 \u0cb8\u0c82\u0c98\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0cb8\u0cbe\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cbf\u0c95 \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0cae\u0cbe\u0ca8 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb0\u0c95\u0ccd\u0cb7\u0ca3\u0cc6 \u0ca8\u0cc0\u0ca1\u0cbf\u0ca6 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc1?",
+      "options": [
+        "73rd Amendment / 73\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "97th Amendment / 97\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "74th Amendment / 74\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "86th Amendment / 86\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 97th Amendment (2011) added Part IX-B for Co-operative Societies. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 97\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2011) \u0cb8\u0cb9\u0c95\u0cbe\u0cb0 \u0cb8\u0c82\u0c98\u0c97\u0cb3\u0cbf\u0c97\u0cbe\u0c97\u0cbf \u0cad\u0cbe\u0c97 IX-B \u0c85\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c85\u0cb5\u0cc1\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb0\u0c9a\u0cbf\u0cb8\u0cc1\u0cb5 \u0cb9\u0c95\u0ccd\u0c95\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0ca8\u0ccd\u0ca8\u0cbe\u0c97\u0cbf \u0cae\u0cbe\u0ca1\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q19.</b> The 100th Amendment Act of 2015 is related to? / 2015 \u0cb0 100\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0c95\u0ccd\u0c95\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0cc6?",
+      "options": [
+        "GST Implementation / \u0c9c\u0cbf.\u0c8e\u0cb8\u0ccd.\u0c9f\u0cbf \u0c85\u0ca8\u0cc1\u0cb7\u0ccd\u0ca0\u0cbe\u0ca8",
+        "NCBC Status / \u0cb9\u0cbf\u0c82\u0ca6\u0cc1\u0cb3\u0cbf\u0ca6 \u0cb5\u0cb0\u0ccd\u0c97\u0c97\u0cb3 \u0c86\u0caf\u0ccb\u0c97\u0ca6 \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0cae\u0cbe\u0ca8",
+        "Land Boundary Agreement with Bangladesh / \u0cac\u0cbe\u0c82\u0c97\u0ccd\u0cb2\u0cbe\u0ca6\u0cc7\u0cb6\u0ca6\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cad\u0cc2 \u0c97\u0ca1\u0cbf \u0c92\u0caa\u0ccd\u0caa\u0c82\u0ca6",
+        "EWS Reservation / EWS \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 100th Amendment (2015) operationalized the exchange of enclaves between India and Bangladesh. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 100\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0cad\u0cbe\u0cb0\u0ca4 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cac\u0cbe\u0c82\u0c97\u0ccd\u0cb2\u0cbe\u0ca6\u0cc7\u0cb6\u0ca6 \u0ca8\u0ca1\u0cc1\u0cb5\u0cbf\u0ca8 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c97\u0cb3 \u0cb5\u0cbf\u0ca8\u0cbf\u0cae\u0caf\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c9c\u0cbe\u0cb0\u0cbf\u0c97\u0cc6 \u0ca4\u0c82\u0ca6\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q20.</b> National Commission for Scheduled Tribes (NCST) was created as a separate body by? / \u0caa\u0cb0\u0cbf\u0cb6\u0cbf\u0cb7\u0ccd\u0c9f \u0caa\u0c82\u0c97\u0ca1\u0c97\u0cb3 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0c86\u0caf\u0ccb\u0c97\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0ccd\u0cb0\u0ca4\u0ccd\u0caf\u0cc7\u0c95 \u0cb8\u0c82\u0cb8\u0ccd\u0ca5\u0cc6\u0caf\u0cbe\u0c97\u0cbf \u0cb0\u0c9a\u0cbf\u0cb8\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc1?",
+      "options": [
+        "65th Amendment / 65\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "89th Amendment / 89\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "102nd Amendment / 102\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "91st Amendment / 91\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 89th Amendment (2003) bifurcated the joint commission into National Commission for SCs and NCST. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 89\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2003) \u0c9c\u0c82\u0c9f\u0cbf \u0c86\u0caf\u0ccb\u0c97\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0cb6\u0cbf\u0cb7\u0ccd\u0c9f \u0c9c\u0cbe\u0ca4\u0cbf\u0c97\u0cb3 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0c86\u0caf\u0ccb\u0c97 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb6\u0cbf\u0cb7\u0ccd\u0c9f \u0caa\u0c82\u0c97\u0ca1\u0c97\u0cb3 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0c86\u0caf\u0ccb\u0c97 \u0c8e\u0c82\u0ca6\u0cc1 \u0cb5\u0cbf\u0cad\u0c9c\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q21.</b> Special provision for Hyderabad-Karnataka region (Article 371J) was added by? / \u0cb9\u0cc8\u0ca6\u0cb0\u0cbe\u0cac\u0cbe\u0ca6\u0ccd-\u0c95\u0cb0\u0ccd\u0ca8\u0cbe\u0c9f\u0c95 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c95\u0ccd\u0c95\u0cc6 \u0cb5\u0cbf\u0cb6\u0cc7\u0cb7 \u0cb8\u0cb5\u0cb2\u0ca4\u0ccd\u0ca4\u0cc1 \u0ca8\u0cc0\u0ca1\u0cb2\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "91st Amendment / 91\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "73rd Amendment / 73\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "101st Amendment / 101\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "98th Amendment / 98\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 3,
+      "explanation": "Option (d) is correct: The 98th Amendment (2012) inserted Article 371J to provide special status and regional boards for the Hyderabad-Karnataka region. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 4 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 98\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2012) \u0cb9\u0cc8\u0ca6\u0cb0\u0cbe\u0cac\u0cbe\u0ca6\u0ccd-\u0c95\u0cb0\u0ccd\u0ca8\u0cbe\u0c9f\u0c95 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c95\u0ccd\u0c95\u0cc6 \u0cb5\u0cbf\u0cb6\u0cc7\u0cb7 \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0cae\u0cbe\u0ca8 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0caa\u0ccd\u0cb0\u0cbe\u0ca6\u0cc7\u0cb6\u0cbf\u0c95 \u0cae\u0c82\u0ca1\u0cb3\u0cbf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c92\u0ca6\u0c97\u0cbf\u0cb8\u0cb2\u0cc1 371\u0c9c\u0cc6 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q22.</b> The 39th Amendment shielded the election of which of the following from court scrutiny? / 39\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0caf\u0cbe\u0cb0 \u0c9a\u0cc1\u0ca8\u0cbe\u0cb5\u0ca3\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0cb2\u0caf\u0ca6 \u0caa\u0cb0\u0cbf\u0cb6\u0cc0\u0cb2\u0ca8\u0cc6\u0caf\u0cbf\u0c82\u0ca6 \u0cb9\u0cca\u0cb0\u0c97\u0cbf\u0c9f\u0ccd\u0c9f\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "Chief Justice of India / \u0cad\u0cbe\u0cb0\u0ca4\u0ca6 \u0cae\u0cc1\u0c96\u0ccd\u0caf \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0ca7\u0cc0\u0cb6\u0cb0\u0cc1",
+        "Prime Minister and Speaker / \u0caa\u0ccd\u0cb0\u0ca7\u0cbe\u0ca8 \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb8\u0ccd\u0caa\u0cc0\u0c95\u0cb0\u0ccd",
+        "Governor / \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0caa\u0cbe\u0cb2\u0cb0\u0cc1",
+        "All of the above / \u0cae\u0cc7\u0cb2\u0cbf\u0ca8 \u0c8e\u0cb2\u0ccd\u0cb2\u0cb5\u0cc2"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 39th Amendment (1975) placed the election of President, VP, PM, and Speaker beyond court scrutiny. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 39\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1975) \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf, \u0c89\u0caa\u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf, \u0caa\u0ccd\u0cb0\u0ca7\u0cbe\u0ca8 \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb8\u0ccd\u0caa\u0cc0\u0c95\u0cb0\u0ccd \u0c85\u0cb5\u0cb0 \u0c9a\u0cc1\u0ca8\u0cbe\u0cb5\u0ca3\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0cb2\u0caf\u0ca6 \u0caa\u0cb0\u0cbf\u0cb6\u0cc0\u0cb2\u0ca8\u0cc6\u0caf\u0cbf\u0c82\u0ca6 \u0cb9\u0cca\u0cb0\u0c97\u0cbf\u0c9f\u0ccd\u0c9f\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q23.</b> Which amendment made the declaration of Emergency by the President non-justiciable? / \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf\u0c97\u0cb3\u0cc1 \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb8\u0ccd\u0ca5\u0cbf\u0ca4\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c98\u0ccb\u0cb7\u0cbf\u0cb8\u0cc1\u0cb5\u0cc1\u0ca6\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0cb2\u0caf\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0caa\u0ccd\u0cb0\u0cb6\u0ccd\u0ca8\u0cbf\u0cb8\u0cb2\u0cc1 \u0cb8\u0cbe\u0ca7\u0ccd\u0caf\u0cb5\u0cbf\u0cb2\u0ccd\u0cb2\u0ca6\u0c82\u0ca4\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "38th Amendment / 38\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 38th Amendment (1975) clarified that emergency declarations cannot be challenged in any court. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 38\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1975) \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0c98\u0ccb\u0cb7\u0ca3\u0cc6\u0c97\u0cb3\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb8\u0cc1\u0c97\u0ccd\u0cb0\u0cc0\u0cb5\u0cbe\u0c9c\u0ccd\u0c9e\u0cc6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc7 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0cb2\u0caf\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0caa\u0ccd\u0cb0\u0cb6\u0ccd\u0ca8\u0cbf\u0cb8\u0cb2\u0cc1 \u0cb8\u0cbe\u0ca7\u0ccd\u0caf\u0cb5\u0cbf\u0cb2\u0ccd\u0cb2 \u0c8e\u0c82\u0ca6\u0cc1 \u0cb8\u0ccd\u0caa\u0cb7\u0ccd\u0c9f\u0caa\u0ca1\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "\n            <div class=\"context-box\">\n                Q24. \ud83d\udca0 Match the following landmark amendments with their primary subjects: / \u00bb \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0caa\u0ccd\u0cb0\u0cae\u0cc1\u0c96 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0cb5\u0cc1\u0c97\u0cb3 \u0caa\u0ccd\u0cb0\u0cbe\u0ca5\u0cae\u0cbf\u0c95 \u0cb5\u0cbf\u0cb7\u0caf\u0c97\u0cb3\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0cb8\u0cbf:<br><br>\u3010List I\u3011 \u3164 \u3164 \u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3010List II\u3011 <br><br>\u2502A. 52nd Amendment \u2502\u3164 \u25021. Reduction of voting age \u2502 \u3164<br><br>\u2502B. 61st Amendment \u2502\u3164 \u25022. Right to Education \u2502<br><br>\u2502C. 73rd Amendment \u2502\u3164 \u25023. Panchayati Raj \u2502\u3164<br><br>\u2502D. 86th Amendment \u2502\u3164 \u25024. Anti-Defection Law \u2502<br><br>\u3164\u3164\u3164\u3164\u3164<br>\u3010\u0caa\u0c9f\u0ccd\u0c9f\u0cbf I\u3011\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164 \u3010\u0caa\u0c9f\u0ccd\u0c9f\u0cbf II\u3011 <br> <br>\u2502A. 52\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164 \u3164 \u25021. \u0cae\u0ca4\u0ca6\u0cbe\u0ca8\u0ca6 \u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0cc1 \u0c87\u0cb3\u0cbf\u0c95\u0cc6 \u2502<br><br>\u2502B. 61\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164 \u3164 \u2502 2. \u0cb6\u0cbf\u0c95\u0ccd\u0cb7\u0ca3\u0ca6 \u0cb9\u0c95\u0ccd\u0c95\u0cc1 \u2502<br><br>\u2502C. 73\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164\u3164 \u2502 3. \u0caa\u0c82\u0c9a\u0cbe\u0caf\u0ca4\u0ccd \u0cb0\u0cbe\u0c9c\u0ccd \u2502<br><br>\u2502D. 86\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u2502\u3164\u3164 \u2502 4. \u0caa\u0c95\u0ccd\u0cb7\u0cbe\u0c82\u0ca4\u0cb0 \u0cb5\u0cbf\u0cb0\u0ccb\u0ca7\u0cbf \u0c95\u0cbe\u0ca8\u0cc2\u0ca8\u0cc1 \u2502<br>\u3164\u3164\u3164\u3164\u3164\n            </div>\n            <b>Q24.</b> Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "A-4, B-1, C-3, D-2",
+        "A-1, B-4, C-2, D-3",
+        "A-4, B-1, C-2, D-3",
+        "A-3, B-2, C-1, D-4"
+      ],
+      "correctIndex": 0,
+      "explanation": "\u3164\u27bb 52nd Amendment (1985) introduced the Anti-Defection Law (\u0caa\u0c95\u0ccd\u0cb7\u0cbe\u0c82\u0ca4\u0cb0 \u0cb5\u0cbf\u0cb0\u0ccb\u0ca7\u0cbf \u0c95\u0cbe\u0ca8\u0cc2\u0ca8\u0cc1) in the 10th Schedule. \u3164\u3164\u27bb 61st Amendment (1988) reduced the voting age from 21 to 18 years. \u3164\u3164\u27bb 73rd Amendment (1992) gave constitutional status to Panchayati Raj institutions. \u3164\u3164\u27bb 86th Amendment (2002) made the Right to Education a Fundamental Right under Article 21A. | / \u3164\u3164\u27bb 52\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (1985) 10\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0caa\u0c95\u0ccd\u0cb7\u0cbe\u0c82\u0ca4\u0cb0 \u0cb5\u0cbf\u0cb0\u0ccb\u0ca7\u0cbf \u0c95\u0cbe\u0ca8\u0cc2\u0ca8\u0ca8\u0ccd\u0ca8\u0cc1 (Anti-Defection Law) \u0caa\u0cb0\u0cbf\u0c9a\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb 61\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (1988) \u0cae\u0ca4\u0ca6\u0cbe\u0ca8\u0ca6 \u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0ca8\u0ccd\u0ca8\u0cc1 (Voting age) 21 \u0cb0\u0cbf\u0c82\u0ca6 18 \u0cb5\u0cb0\u0ccd\u0cb7\u0c95\u0ccd\u0c95\u0cc6 \u0c87\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb 73\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (1992) \u0caa\u0c82\u0c9a\u0cbe\u0caf\u0ca4\u0ccd \u0cb0\u0cbe\u0c9c\u0ccd (Panchayati Raj) \u0cb8\u0c82\u0cb8\u0ccd\u0ca5\u0cc6\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0cb8\u0cbe\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cbf\u0c95 \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0cae\u0cbe\u0ca8 \u0ca8\u0cc0\u0ca1\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb 86\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (2002) 21\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf\u0caf \u0c85\u0ca1\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0cb6\u0cbf\u0c95\u0ccd\u0cb7\u0ca3\u0ca6 \u0cb9\u0c95\u0ccd\u0c95\u0ca8\u0ccd\u0ca8\u0cc1 (Right to Education) \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0ca8\u0ccd\u0ca8\u0cbe\u0c97\u0cbf \u0cae\u0cbe\u0ca1\u0cbf\u0ca4\u0cc1. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q25.</b> Which amendment act increased the retirement age of High Court judges from 60 to 62? / \u0cb9\u0cc8\u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0ca7\u0cc0\u0cb6\u0cb0 \u0ca8\u0cbf\u0cb5\u0cc3\u0ca4\u0ccd\u0ca4\u0cbf \u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0ca8\u0ccd\u0ca8\u0cc1 60 \u0cb0\u0cbf\u0c82\u0ca6 62\u0c95\u0ccd\u0c95\u0cc6 \u0cb9\u0cc6\u0c9a\u0ccd\u0c9a\u0cbf\u0cb8\u0cbf\u0ca6 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc1?",
+      "options": [
+        "7th Amendment / 7\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "15th Amendment / 15\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 15th Amendment (1963) extended the age of retirement for HC Judges. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 15\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1963) \u0cb9\u0cc8\u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0ca7\u0cc0\u0cb6\u0cb0 \u0ca8\u0cbf\u0cb5\u0cc3\u0ca4\u0ccd\u0ca4\u0cbf \u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb5\u0cbf\u0cb8\u0ccd\u0ca4\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q26.</b> Which amendment abolished the &quot;Privy Purse&quot; and special privileges of former rulers of princely states? / \u0cb0\u0cbe\u0c9c\u0cae\u0ca8\u0cc6\u0ca4\u0ca8\u0c97\u0cb3 &quot;\u0caa\u0ccd\u0cb0\u0cbf\u0cb5\u0cbf \u0caa\u0cb0\u0ccd\u0cb8\u0ccd&quot; \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb5\u0cbf\u0cb6\u0cc7\u0cb7 \u0cb8\u0cb5\u0cb2\u0ca4\u0ccd\u0ca4\u0cc1\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0cb0\u0ca6\u0ccd\u0ca6\u0cc1\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "26th Amendment / 26\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 3,
+      "explanation": "Option (d) is correct: The 26th Amendment (1971) abolished titles and privy purses of former rulers. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 4 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 26\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1971) \u0cb0\u0cbe\u0c9c\u0cae\u0ca8\u0cc6\u0ca4\u0ca8\u0ca6 \u0cac\u0cbf\u0cb0\u0cc1\u0ca6\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0caa\u0ccd\u0cb0\u0cbf\u0cb5\u0cbf \u0caa\u0cb0\u0ccd\u0cb8\u0ccd\u200c\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb0\u0ca6\u0ccd\u0ca6\u0cc1\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q27.</b> Through which amendment was Delhi designated as the &quot;National Capital Territory of Delhi&quot;? / \u0ca6\u0cc6\u0cb9\u0cb2\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 &quot;\u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0cb0\u0cbe\u0c9c\u0ca7\u0cbe\u0ca8\u0cbf \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6&quot; \u0c8e\u0c82\u0ca6\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf \u0cae\u0cc2\u0cb2\u0c95 \u0c95\u0cb0\u0cc6\u0caf\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "71st Amendment / 71\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "91st Amendment / 91\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "69th Amendment / 69\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "73rd Amendment / 73\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 69th Amendment (1991) provided special status to Delhi, giving it a legislative assembly. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 69\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1991) \u0ca6\u0cc6\u0cb9\u0cb2\u0cbf\u0c97\u0cc6 \u0cb5\u0cbf\u0cb6\u0cc7\u0cb7 \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0cae\u0cbe\u0ca8 \u0ca8\u0cc0\u0ca1\u0cbf\u0ca4\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c85\u0ca6\u0c95\u0ccd\u0c95\u0cca\u0c82\u0ca6\u0cc1 \u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cb8\u0cad\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c92\u0ca6\u0c97\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q28.</b> \u29be Which amendment provided that &quot;Cabinet&#x27;s written recommendation&quot; is necessary for the President to declare a National Emergency? / \u29be \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf\u0c97\u0cb3\u0cc1 \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb8\u0ccd\u0ca5\u0cbf\u0ca4\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c98\u0ccb\u0cb7\u0cbf\u0cb8\u0cb2\u0cc1 &quot;\u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf\u0cae\u0c82\u0ca1\u0cb2\u0ca6 \u0cb2\u0cbf\u0c96\u0cbf\u0ca4 \u0cb6\u0cbf\u0cab\u0cbe\u0cb0\u0cb8\u0cc1&quot; \u0c85\u0c97\u0ca4\u0ccd\u0caf\u0cb5\u0cc6\u0c82\u0ca6\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0ca4\u0cbf\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "38th Amendment / 38\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 0,
+      "explanation": "Option 1 is correct: The 44th Amendment (1978) introduced procedural safeguards, requiring a written recommendation from the Cabinet. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 1 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (1978) \u0cb8\u0c82\u0caa\u0cc1\u0c9f\u0ca6 \u0cb2\u0cbf\u0c96\u0cbf\u0ca4 \u0cb6\u0cbf\u0cab\u0cbe\u0cb0\u0cb8\u0cc1 (Written recommendation from the Cabinet) \u0c85\u0ca4\u0ccd\u0caf\u0c97\u0ca4\u0ccd\u0caf \u0c8e\u0c82\u0ca6\u0cc1 \u0ca4\u0cbf\u0cb3\u0cbf\u0cb8\u0cc1\u0cb5 \u0cae\u0cc2\u0cb2\u0c95 \u0c95\u0cbe\u0cb0\u0ccd\u0caf\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0ca6 \u0cb0\u0c95\u0ccd\u0cb7\u0ca3\u0cc6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c9a\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q29.</b> Which amendment provided for the appointment of retired High Court judges as acting judges of the same court? / \u0ca8\u0cbf\u0cb5\u0cc3\u0ca4\u0ccd\u0ca4 \u0cb9\u0cc8\u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0ca7\u0cc0\u0cb6\u0cb0\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0ca6\u0cc7 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0cb2\u0caf\u0ca6 \u0cb9\u0c82\u0c97\u0cbe\u0cae\u0cbf \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0ca7\u0cc0\u0cb6\u0cb0\u0cbe\u0c97\u0cbf \u0ca8\u0cc7\u0cae\u0cbf\u0cb8\u0cb2\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0c85\u0cb5\u0c95\u0cbe\u0cb6 \u0ca8\u0cc0\u0ca1\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "7th Amendment / 7\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "15th Amendment / 15\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 15th Amendment (1963) introduced provisions for the appointment of retired judges as acting judges. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 15\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1963) \u0ca8\u0cbf\u0cb5\u0cc3\u0ca4\u0ccd\u0ca4 \u0cb9\u0cc8\u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0ca7\u0cc0\u0cb6\u0cb0\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0ca6\u0cc7 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0cb2\u0caf\u0ca6 \u0cb9\u0c82\u0c97\u0cbe\u0cae\u0cbf \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0ca7\u0cc0\u0cb6\u0cb0\u0cbe\u0c97\u0cbf \u0ca8\u0cc7\u0cae\u0cbf\u0cb8\u0cb2\u0cc1 \u0c85\u0cb5\u0c95\u0cbe\u0cb6 \u0ca8\u0cc0\u0ca1\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q30.</b> Which amendment act provided for reservation in promotion in government jobs for Scheduled Castes and Scheduled Tribes? / \u0cb8\u0cb0\u0ccd\u0c95\u0cbe\u0cb0\u0cbf \u0c89\u0ca6\u0ccd\u0caf\u0ccb\u0c97\u0c97\u0cb3\u0cb2\u0ccd\u0cb2\u0cbf \u0cac\u0ca1\u0ccd\u0ca4\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0c92\u0ca6\u0c97\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "81st Amendment / 81\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "77th Amendment / 77\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "82nd Amendment / 82\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "85th Amendment / 85\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 77th Amendment (1995) inserted Article 16(4A) to allow reservation in promotion for SCs and STs. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 77\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1995) SC \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 ST \u0c85\u0cad\u0ccd\u0caf\u0cb0\u0ccd\u0ca5\u0cbf\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0cac\u0ca1\u0ccd\u0ca4\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf \u0ca8\u0cc0\u0ca1\u0cb2\u0cc1 16\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0c89\u0caa\u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q31.</b> The &quot;Carry Forward Rule&quot; for unfilled reserved vacancies was constitutionally validated by? / \u0cad\u0cb0\u0ccd\u0ca4\u0cbf\u0caf\u0cbe\u0c97\u0ca6 \u0cae\u0cc0\u0cb8\u0cb2\u0cc1 \u0cb9\u0cc1\u0ca6\u0ccd\u0ca6\u0cc6\u0c97\u0cb3\u0cbf\u0c97\u0cbe\u0c97\u0cbf &quot;\u0c95\u0ccd\u0caf\u0cbe\u0cb0\u0cbf \u0cab\u0cbe\u0cb0\u0ccd\u0cb5\u0ca1\u0ccd\u0ccd\u0cb0 \u0ca8\u0cbf\u0caf\u0cae&quot;\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cbe\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cbf\u0c95\u0cb5\u0cbe\u0c97\u0cbf \u0cae\u0cbe\u0ca8\u0ccd\u0caf \u0cae\u0cbe\u0ca1\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc1?",
+      "options": [
+        "77th Amendment / 77\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "82nd Amendment / 82\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "81st Amendment / 81\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "85th Amendment / 85\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 81st Amendment (2000) enabled the state to consider unfilled vacancies of a year as a separate class of vacancies. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 81\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2000) \u0cad\u0cb0\u0ccd\u0ca4\u0cbf \u0cae\u0cbe\u0ca1\u0cb2\u0cc1 \u0caa\u0ccd\u0cb0\u0ca4\u0ccd\u0caf\u0cc7\u0c95 \u0cb5\u0cb0\u0ccd\u0c97\u0ca6 \u0cb9\u0cc1\u0ca6\u0ccd\u0ca6\u0cc6\u0c97\u0cb3\u0cc6\u0c82\u0ca6\u0cc1 \u0caa\u0cb0\u0cbf\u0c97\u0ca3\u0cbf\u0cb8\u0cb2\u0cc1 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c95\u0ccd\u0c95\u0cc6 \u0c85\u0ca7\u0cbf\u0c95\u0cbe\u0cb0 \u0ca8\u0cc0\u0ca1\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q32.</b> Which amendment allowed the use of 2001 census population figures for the delimitation of constituencies without changing the number of seats? / \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cac\u0ca6\u0cb2\u0cbe\u0caf\u0cbf\u0cb8\u0ca6\u0cc6 \u0c95\u0ccd\u0cb7\u0cc7\u0ca4\u0ccd\u0cb0\u0c97\u0cb3 \u0cae\u0cb0\u0cc1\u0cb5\u0cbf\u0c82\u0c97\u0ca1\u0ca3\u0cc6\u0c97\u0cbe\u0c97\u0cbf 2001 \u0cb0 \u0c9c\u0ca8\u0c97\u0ca3\u0ca4\u0cbf\u0caf \u0c85\u0c82\u0c95\u0cbf\u0c85\u0c82\u0cb6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cac\u0cb3\u0cb8\u0cb2\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0c85\u0ca8\u0cc1\u0cae\u0ca4\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "84th Amendment / 84\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "91st Amendment / 91\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "86th Amendment / 86\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "87th Amendment / 87\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 3,
+      "explanation": "Option (d) is correct: The 87th Amendment (2003) provided for the delimitation of constituencies on the basis of the 2001 census. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 4 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 87\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2003) 1991\u0cb0 \u0c9c\u0ca8\u0c97\u0ca3\u0ca4\u0cbf\u0caf \u0cac\u0ca6\u0cb2\u0cbf\u0c97\u0cc6 2001\u0cb0 \u0c9c\u0ca8\u0c97\u0ca3\u0ca4\u0cbf\u0caf \u0c86\u0ca7\u0cbe\u0cb0\u0ca6 \u0cae\u0cc7\u0cb2\u0cc6 \u0c95\u0ccd\u0cb7\u0cc7\u0ca4\u0ccd\u0cb0\u0c97\u0cb3 \u0cae\u0cb0\u0cc1\u0cb5\u0cbf\u0c82\u0c97\u0ca1\u0ca3\u0cc6\u0c97\u0cc6 \u0c85\u0cb5\u0c95\u0cbe\u0cb6 \u0ca8\u0cc0\u0ca1\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q33.</b> The 91st Amendment Act, 2003, provided that the number of ministers in a State shall not be less than? / 2003 \u0cb0 91\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf\u0ca8 \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf\u0c97\u0cb3 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6 \u0c8e\u0cb7\u0ccd\u0c9f\u0c95\u0ccd\u0c95\u0cbf\u0c82\u0ca4 \u0c95\u0ca1\u0cbf\u0cae\u0cc6 \u0c87\u0cb0\u0cac\u0cbe\u0cb0\u0ca6\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0ca4\u0cbf\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "10",
+        "15",
+        "12",
+        "7"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 91st Amendment stipulated that ministers shall not be less than 12 in states. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 91\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c97\u0cb3\u0cb2\u0ccd\u0cb2\u0cbf \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf\u0c97\u0cb3 \u0cb8\u0c82\u0c96\u0ccd\u0caf\u0cc6\u0caf\u0cc1 \u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cb8\u0cad\u0cc6\u0caf \u0cac\u0cb2\u0ca6 \u0cb6\u0cc7.15 \u0c95\u0ccd\u0c95\u0cbf\u0c82\u0ca4 \u0cb9\u0cc6\u0c9a\u0ccd\u0c9a\u0cbf\u0cb0\u0cac\u0cbe\u0cb0\u0ca6\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 12 \u0c95\u0ccd\u0c95\u0cbf\u0c82\u0ca4 \u0c95\u0ca1\u0cbf\u0cae\u0cc6 \u0c87\u0cb0\u0cac\u0cbe\u0cb0\u0ca6\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0ca8\u0cbf\u0c97\u0ca6\u0cbf\u0caa\u0ca1\u0cbf\u0cb8\u0cbf\u0ca6\u0cc6.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q34.</b> The 99th Amendment Act, 2014, which was struck down by the Supreme Court, related to? / \u0cb8\u0cc1\u0caa\u0ccd\u0cb0\u0cc0\u0c82 \u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd\u200c\u0ca8\u0cbf\u0c82\u0ca6 \u0cb0\u0ca6\u0ccd\u0ca6\u0cc1\u0c97\u0cca\u0c82\u0ca1 2014 \u0cb0 99\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0c95\u0ccd\u0c95\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0cc6?",
+      "options": [
+        "GST Council / \u0c9c\u0cbf.\u0c8e\u0cb8\u0ccd.\u0c9f\u0cbf \u0cae\u0c82\u0ca1\u0cb3\u0cbf",
+        "National Judicial Appointments Commission / \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0c82\u0c97 \u0ca8\u0cc7\u0cae\u0c95\u0cbe\u0ca4\u0cbf \u0c86\u0caf\u0ccb\u0c97",
+        "NCBC / \u0cb9\u0cbf\u0c82\u0ca6\u0cc1\u0cb3\u0cbf\u0ca6 \u0cb5\u0cb0\u0ccd\u0c97\u0c97\u0cb3 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0c86\u0caf\u0ccb\u0c97",
+        "Lokpal / \u0cb2\u0ccb\u0c95\u0caa\u0cbe\u0cb2"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 99th Amendment (2014) sought to replace the collegium system with the NJAC. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 99\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0c95\u0cca\u0cb2\u0cbf\u0c9c\u0cbf\u0caf\u0c82 \u0cb5\u0ccd\u0caf\u0cb5\u0cb8\u0ccd\u0ca5\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0c82\u0c97 \u0ca8\u0cc7\u0cae\u0c95\u0cbe\u0ca4\u0cbf \u0c86\u0caf\u0ccb\u0c97\u0ca6\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cac\u0ca6\u0cb2\u0cbe\u0caf\u0cbf\u0cb8\u0cb2\u0cc1 \u0caa\u0ccd\u0cb0\u0caf\u0ca4\u0ccd\u0ca8\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1, \u0c86\u0ca6\u0cb0\u0cc6 \u0c85\u0ca6\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0cb8\u0cbe\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cbf\u0c95 \u0c8e\u0c82\u0ca6\u0cc1 \u0c98\u0ccb\u0cb7\u0cbf\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q35.</b> The GST Council was established under which newly inserted article by the 101st Amendment? / 101\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cbf\u0c82\u0ca6 \u0cb9\u0cca\u0cb8\u0ca6\u0cbe\u0c97\u0cbf \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cb2\u0ccd\u0caa\u0c9f\u0ccd\u0c9f \u0caf\u0cbe\u0cb5 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf \u0c85\u0ca1\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0c9c\u0cbf.\u0c8e\u0cb8\u0ccd.\u0c9f\u0cbf \u0cae\u0c82\u0ca1\u0cb3\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0cbf\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "246A",
+        "269A",
+        "279A",
+        "268A"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: Article 279A provides for the creation of the GST Council. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 279\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0cc1 \u0c95\u0cc7\u0c82\u0ca6\u0ccd\u0cb0 \u0cb9\u0ca3\u0c95\u0cbe\u0cb8\u0cc1 \u0cb8\u0c9a\u0cbf\u0cb5\u0cb0 \u0c85\u0ca7\u0ccd\u0caf\u0c95\u0ccd\u0cb7\u0ca4\u0cc6\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0c9c\u0cbf.\u0c8e\u0cb8\u0ccd.\u0c9f\u0cbf \u0cae\u0c82\u0ca1\u0cb3\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb0\u0c9a\u0cbf\u0cb8\u0cb2\u0cc1 \u0c85\u0cb5\u0c95\u0cbe\u0cb6 \u0ca8\u0cc0\u0ca1\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6.",
+      "reference": ""
+    },
+    {
+      "text": "\n            <div class=\"context-box\">\n                Q36. \u29bf Regarding the procedure for amending the Constitution under Article 368, consider the following statements: / \u29bf 368\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf \u0c85\u0ca1\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0cae\u0cbe\u0ca1\u0cc1\u0cb5 \u0caa\u0ccd\u0cb0\u0c95\u0ccd\u0cb0\u0cbf\u0caf\u0cc6\u0c97\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0c82\u0ca4\u0cc6 \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c97\u0ca3\u0cbf\u0cb8\u0cbf:<br><br>i. A bill for amendment can be initiated only in the Lok Sabha. / i. \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0cae\u0cb8\u0cc2\u0ca6\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb2\u0ccb\u0c95\u0cb8\u0cad\u0cc6\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0cae\u0cbe\u0ca4\u0ccd\u0cb0 \u0cae\u0c82\u0ca1\u0cbf\u0cb8\u0cac\u0cb9\u0cc1\u0ca6\u0cc1.<br>ii. In case of disagreement between the two Houses, there is a provision for a joint sitting. / ii. \u0c8e\u0cb0\u0ca1\u0cc1 \u0cb8\u0ca6\u0ca8\u0c97\u0cb3 \u0ca8\u0ca1\u0cc1\u0cb5\u0cc6 \u0cad\u0cbf\u0ca8\u0ccd\u0ca8\u0cbe\u0cad\u0cbf\u0caa\u0ccd\u0cb0\u0cbe\u0caf \u0c89\u0c82\u0c9f\u0cbe\u0ca6 \u0cb8\u0c82\u0ca6\u0cb0\u0ccd\u0cad\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0c9c\u0c82\u0c9f\u0cbf \u0c85\u0ca7\u0cbf\u0cb5\u0cc7\u0cb6\u0ca8\u0c95\u0ccd\u0c95\u0cc6 \u0c85\u0cb5\u0c95\u0cbe\u0cb6\u0cb5\u0cbf\u0ca6\u0cc6.<br>iii. The President must give his assent to the bill and cannot return it for reconsideration. / iii. \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf\u0c97\u0cb3\u0cc1 \u0cae\u0cb8\u0cc2\u0ca6\u0cc6\u0c97\u0cc6 \u0c85\u0c82\u0c95\u0cbf\u0ca4 \u0ca8\u0cc0\u0ca1\u0cb2\u0cc7\u0cac\u0cc7\u0c95\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c85\u0ca6\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0cb0\u0cc1\u0caa\u0cb0\u0cbf\u0cb6\u0cc0\u0cb2\u0ca8\u0cc6\u0c97\u0cc6 \u0cb5\u0cbe\u0caa\u0cb8\u0ccd \u0c95\u0cb3\u0cc1\u0cb9\u0cbf\u0cb8\u0cc1\u0cb5\u0c82\u0ca4\u0cbf\u0cb2\u0ccd\u0cb2.\n            </div>\n            <b>Q36.</b> Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "i and ii only / i \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 ii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "iii only / iii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "ii and iii only / ii \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 iii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "None of the above / \u0cae\u0cc7\u0cb2\u0cbf\u0ca8 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc2 \u0c85\u0cb2\u0ccd\u0cb2"
+      ],
+      "correctIndex": 1,
+      "explanation": "Statement i is incorrect: An amendment bill can be initiated in either House of Parliament. \u3164\u3164\u27bb Statement ii is incorrect: Unlike ordinary bills, there is no provision for a joint sitting for constitutional amendment bills. \u3164\u3164\u27bb Statement iii is correct: Under the 24th Amendment Act (1971), it is mandatory (\u0c95\u0ca1\u0ccd\u0ca1\u0cbe\u0caf) for the President to give assent. | / \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 i \u0ca4\u0caa\u0ccd\u0caa\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0cae\u0cb8\u0cc2\u0ca6\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0c82\u0cb8\u0ca4\u0ccd\u0ca4\u0cbf\u0ca8 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc7 \u0cb8\u0ca6\u0ca8\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf (Either House) \u0cae\u0c82\u0ca1\u0cbf\u0cb8\u0cac\u0cb9\u0cc1\u0ca6\u0cc1. \u3164\u3164\u27bb \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 ii \u0ca4\u0caa\u0ccd\u0caa\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: \u0cb8\u0cbe\u0cae\u0cbe\u0ca8\u0ccd\u0caf \u0cae\u0cb8\u0cc2\u0ca6\u0cc6\u0c97\u0cb3\u0c82\u0ca4\u0cc6 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0cae\u0cb8\u0cc2\u0ca6\u0cc6\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0c9c\u0c82\u0c9f\u0cbf \u0c85\u0ca7\u0cbf\u0cb5\u0cc7\u0cb6\u0ca8 (Joint sitting) \u0ca8\u0ca1\u0cc6\u0cb8\u0cc1\u0cb5 \u0ca8\u0cbf\u0cac\u0c82\u0ca7\u0ca8\u0cc6 \u0c87\u0cb2\u0ccd\u0cb2. \u3164\u3164\u27bb \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 iii \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 1971 \u0cb0 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf \u0c85\u0ca1\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf, \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf\u0c97\u0cb3\u0cc1 \u0c85\u0c82\u0c95\u0cbf\u0ca4 (Assent) \u0ca8\u0cc0\u0ca1\u0cc1\u0cb5\u0cc1\u0ca6\u0cc1 \u0c95\u0ca1\u0ccd\u0ca1\u0cbe\u0caf\u0cb5\u0cbe\u0c97\u0cbf\u0ca6\u0cc6. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q37.</b> Regarding National Emergency, consider the changes introduced by the 44th Amendment Act: / \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb8\u0ccd\u0ca5\u0cbf\u0ca4\u0cbf\u0c97\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0c82\u0ca4\u0cc6, 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0ca4\u0c82\u0ca6 \u0cac\u0ca6\u0cb2\u0cbe\u0cb5\u0ca3\u0cc6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c97\u0ca3\u0cbf\u0cb8\u0cbf:<br>i. The vague term &#x27;internal disturbance&#x27; was substituted with &#x27;armed rebellion&#x27;. / i. \u0c86\u0c82\u0ca4\u0cb0\u0cbf\u0c95 \u0c85\u0cb6\u0cbe\u0c82\u0ca4\u0cbf \u0c8e\u0c82\u0cac \u0caa\u0ca6\u0ca6 \u0cac\u0ca6\u0cb2\u0cbf\u0c97\u0cc6 \u0cb8\u0cb6\u0cb8\u0ccd\u0ca4\u0ccd\u0cb0 \u0ca6\u0c82\u0c97\u0cc6 \u0c8e\u0c82\u0cac \u0caa\u0ca6\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cac\u0cb3\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1.<br>\u3164\u3164\u3164\u3164\u3164<br>ii. It mandated that the President can declare an emergency only on the written recommendation of the Cabinet. / ii. \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0caa\u0ca4\u0cbf\u0c97\u0cb3\u0cc1 \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf\u0cae\u0c82\u0ca1\u0cb2\u0ca6 \u0cb2\u0cbf\u0c96\u0cbf\u0ca4 \u0cb6\u0cbf\u0cab\u0cbe\u0cb0\u0cb8\u0cbf\u0ca8 \u0cae\u0cc7\u0cb2\u0cc6 \u0cae\u0cbe\u0ca4\u0ccd\u0cb0 \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb8\u0ccd\u0ca5\u0cbf\u0ca4\u0cbf \u0c98\u0ccb\u0cb7\u0cbf\u0cb8\u0cac\u0cb9\u0cc1\u0ca6\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0c87\u0ca6\u0cc1 \u0c95\u0ca1\u0ccd\u0ca1\u0cbe\u0caf\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.<br><br>Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "i only / i \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "ii only / ii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "Both i and ii / i \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 ii \u0c8e\u0cb0\u0ca1\u0cc2",
+        "Neither i nor ii / i \u0c85\u0ca5\u0cb5\u0cbe ii \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc2 \u0c85\u0cb2\u0ccd\u0cb2"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: Statement i is correct: The vague term &#x27;internal disturbance&#x27; was substituted with &#x27;armed rebellion&#x27;. Statement ii is correct: This procedural safeguard ensures that the decision is taken collectively by the Cabinet. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 i \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0c85\u0ca7\u0cbf\u0c95\u0cbe\u0cb0\u0c97\u0cb3 \u0ca6\u0cc1\u0cb0\u0cc1\u0caa\u0caf\u0ccb\u0c97\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca4\u0ca1\u0cc6\u0caf\u0cb2\u0cc1, \u0c85\u0cb8\u0ccd\u0caa\u0cb7\u0ccd\u0c9f\u0cb5\u0cbe\u0ca6 \u0c86\u0c82\u0ca4\u0cb0\u0cbf\u0c95 \u0c85\u0cb6\u0cbe\u0c82\u0ca4\u0cbf \u0c8e\u0c82\u0cac \u0caa\u0ca6\u0ca6 \u0cac\u0ca6\u0cb2\u0cbf\u0c97\u0cc6 \u0cb8\u0cb6\u0cb8\u0ccd\u0ca4\u0ccd\u0cb0 \u0ca6\u0c82\u0c97\u0cc6 \u0c8e\u0c82\u0cac \u0caa\u0ca6\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cac\u0cb3\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1. \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 ii \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: \u0c88 \u0c95\u0cbe\u0cb0\u0ccd\u0caf\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0ca6 \u0cb0\u0c95\u0ccd\u0cb7\u0ca3\u0cc6\u0caf\u0cc1 \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb8\u0ccd\u0ca5\u0cbf\u0ca4\u0cbf\u0caf \u0ca8\u0cbf\u0cb0\u0ccd\u0ca7\u0cbe\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0c82\u0ca4\u0ccd\u0cb0\u0cbf\u0cae\u0c82\u0ca1\u0cb2\u0cb5\u0cc1 \u0cb8\u0cbe\u0cae\u0cc2\u0cb9\u0cbf\u0c95\u0cb5\u0cbe\u0c97\u0cbf \u0ca4\u0cc6\u0c97\u0cc6\u0ca6\u0cc1\u0c95\u0cca\u0cb3\u0ccd\u0cb3\u0cc1\u0cb5\u0c82\u0ca4\u0cc6 \u0cae\u0cbe\u0ca1\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q38.</b> \u29be The reservation for women under the 106th Amendment is initially provided for how many years? / \u29be 106\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf \u0c85\u0ca1\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0cae\u0cb9\u0cbf\u0cb3\u0cc6\u0caf\u0cb0\u0cbf\u0c97\u0cc6 \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0cb0\u0c82\u0cad\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0c8e\u0cb7\u0ccd\u0c9f\u0cc1 \u0cb5\u0cb0\u0ccd\u0cb7\u0c97\u0cb3\u0cb5\u0cb0\u0cc6\u0c97\u0cc6 \u0c92\u0ca6\u0c97\u0cbf\u0cb8\u0cb2\u0cbe\u0c97\u0cbf\u0ca6\u0cc6?",
+      "options": [
+        "15",
+        "10",
+        "20",
+        "Permanent / \u0cb6\u0cbe\u0cb6\u0ccd\u0cb5\u0ca4"
+      ],
+      "correctIndex": 0,
+      "explanation": "Option 1 is correct: The 106th Amendment includes a sunset clause (\u0cb8\u0cc2\u0cb0\u0ccd\u0caf\u0cbe\u0cb8\u0ccd\u0ca4\u0ca6 \u0cb7\u0cb0\u0ca4\u0ccd\u0ca4\u0cc1) of 15 years, which can be extended by Parliament later. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 1 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 106\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 15 \u0cb5\u0cb0\u0ccd\u0cb7\u0c97\u0cb3 \u0cb8\u0cc2\u0cb0\u0ccd\u0caf\u0cbe\u0cb8\u0ccd\u0ca4\u0ca6 \u0cb7\u0cb0\u0ca4\u0ccd\u0ca4\u0ca8\u0ccd\u0ca8\u0cc1 (Sunset clause) \u0c92\u0cb3\u0c97\u0cca\u0c82\u0ca1\u0cbf\u0ca6\u0cc6, \u0c87\u0ca6\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca8\u0c82\u0ca4\u0cb0 \u0cb8\u0c82\u0cb8\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb5\u0cbf\u0cb8\u0ccd\u0ca4\u0cb0\u0cbf\u0cb8\u0cac\u0cb9\u0cc1\u0ca6\u0cc1. |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q39.</b> Which amendment process requires ratification by at least half of the state legislatures? / \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0caa\u0ccd\u0cb0\u0c95\u0ccd\u0cb0\u0cbf\u0caf\u0cc6\u0c97\u0cc6 \u0c95\u0ca8\u0cbf\u0cb7\u0ccd\u0ca0 \u0c85\u0cb0\u0ccd\u0ca7\u0ca6\u0cb7\u0ccd\u0c9f\u0cc1 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf \u0cb6\u0cbe\u0cb8\u0ca8\u0cb8\u0cad\u0cc6\u0c97\u0cb3 \u0c85\u0ca8\u0cc1\u0cae\u0ccb\u0ca6\u0ca8\u0cc6 \u0c85\u0c97\u0ca4\u0ccd\u0caf\u0cb5\u0cbf\u0ca6\u0cc6?",
+      "options": [
+        "Fundamental Rights / \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0cc1\u0c97\u0cb3\u0cc1",
+        "Directive Principles / \u0cae\u0cbe\u0cb0\u0ccd\u0c97\u0ca6\u0cb0\u0ccd\u0cb6\u0c95 \u0ca4\u0ca4\u0ccd\u0cb5\u0c97\u0cb3\u0cc1",
+        "Federal provisions / \u0c92\u0c95\u0ccd\u0c95\u0cc2\u0c9f\u0ca6 \u0ca8\u0cbf\u0cac\u0c82\u0ca7\u0ca8\u0cc6\u0c97\u0cb3\u0cc1",
+        "Citizenship / \u0caa\u0ccc\u0cb0\u0ca4\u0ccd\u0cb5"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: Amendments affecting the federal structure require 50% state ratification. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: \u0c92\u0c95\u0ccd\u0c95\u0cc2\u0c9f\u0ca6 \u0cb0\u0c9a\u0ca8\u0cc6\u0caf \u0cae\u0cc7\u0cb2\u0cc6 \u0caa\u0cb0\u0cbf\u0ca3\u0cbe\u0cae \u0cac\u0cc0\u0cb0\u0cc1\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0cb6\u0cc7.50 \u0cb0\u0cb7\u0ccd\u0c9f\u0cc1 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c97\u0cb3 \u0ca6\u0cc3\u0ca2\u0cc0\u0c95\u0cb0\u0ca3\u0ca6 \u0c85\u0c97\u0ca4\u0ccd\u0caf\u0cb5\u0cbf\u0ca6\u0cc6.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q40.</b> \u29be Which amendment provided that no law for implementing Directive Principles (Art 39b &amp; 39c) can be declared void on ground of violating Fundamental Rights? / \u29be \u0cae\u0cbe\u0cb0\u0ccd\u0c97\u0ca6\u0cb0\u0ccd\u0cb6\u0c95 \u0ca4\u0ca4\u0ccd\u0cb5\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 (39\u0cac\u0cbf \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 39\u0cb8\u0cbf) \u0c9c\u0cbe\u0cb0\u0cbf\u0c97\u0cc6 \u0ca4\u0cb0\u0cc1\u0cb5 \u0caf\u0cbe\u0cb5\u0cc1\u0ca6\u0cc7 \u0c95\u0cbe\u0ca8\u0cc2\u0ca8\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0cc1\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c89\u0cb2\u0ccd\u0cb2\u0c82\u0c98\u0cbf\u0cb8\u0cbf\u0ca6 \u0c86\u0ca7\u0cbe\u0cb0\u0ca6 \u0cae\u0cc7\u0cb2\u0cc6 \u0c85\u0cae\u0cbe\u0ca8\u0ccd\u0caf \u0c8e\u0c82\u0ca6\u0cc1 \u0c98\u0ccb\u0cb7\u0cbf\u0cb8\u0cb2\u0cbe\u0c97\u0ca6\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0ca4\u0cbf\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "25th Amendment / 25\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 0,
+      "explanation": "Option 1 is correct: The 25th Amendment (1971) inserted Article 31C to give primacy to social justice principles over property rights. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 1 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 25\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf (1971) \u0c86\u0cb8\u0ccd\u0ca4\u0cbf \u0cb9\u0c95\u0ccd\u0c95\u0cc1\u0c97\u0cb3\u0cbf\u0c97\u0cbf\u0c82\u0ca4 \u0cb8\u0cbe\u0cae\u0cbe\u0c9c\u0cbf\u0c95 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0ca6 \u0ca4\u0ca4\u0ccd\u0cb5\u0c97\u0cb3\u0cbf\u0c97\u0cc6 (Social justice principles) \u0c86\u0ca6\u0ccd\u0caf\u0ca4\u0cc6 \u0ca8\u0cc0\u0ca1\u0cb2\u0cc1 31\u0cb8\u0cbf \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. |",
+      "reference": ""
+    },
+    {
+      "text": "\n            <div class=\"context-box\">\n                Q41. \u29bf Consider the following Assertion (A) and Reason (R): / \u29bf \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0caa\u0ccd\u0cb0\u0ca4\u0cbf\u0caa\u0cbe\u0ca6\u0ca8\u0cc6 (A) \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c95\u0cbe\u0cb0\u0ca3 (R) \u0c85\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c97\u0ca3\u0cbf\u0cb8\u0cbf:<br><br>Assertion (A): The Parliament cannot amend the Basic Structure of the Constitution. / \u0caa\u0ccd\u0cb0\u0ca4\u0cbf\u0caa\u0cbe\u0ca6\u0ca8\u0cc6 (A): \u0cb8\u0c82\u0cb8\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0ca6 \u0cae\u0cc2\u0cb2 \u0cb0\u0c9a\u0ca8\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0cae\u0cbe\u0ca1\u0cb2\u0cc1 \u0cb8\u0cbe\u0ca7\u0ccd\u0caf\u0cb5\u0cbf\u0cb2\u0ccd\u0cb2.<br><br>Reason (R): The Basic Structure doctrine was propounded by the Supreme Court in the Kesavananda Bharati case. / \u0c95\u0cbe\u0cb0\u0ca3 (R): \u0cae\u0cc2\u0cb2 \u0cb0\u0c9a\u0ca8\u0cc6\u0caf \u0cb8\u0cbf\u0ca6\u0ccd\u0ca7\u0cbe\u0c82\u0ca4\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c95\u0cc7\u0cb6\u0cb5\u0cbe\u0ca8\u0c82\u0ca6 \u0cad\u0cbe\u0cb0\u0ca4\u0cbf \u0caa\u0ccd\u0cb0\u0c95\u0cb0\u0ca3\u0ca6\u0cb2\u0ccd\u0cb2\u0cbf \u0cb8\u0cc1\u0caa\u0ccd\u0cb0\u0cc0\u0c82 \u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd \u0cae\u0c82\u0ca1\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.\n            </div>\n            <b>Q41.</b> Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "Both A and R are true and R is the correct explanation of A / A \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 R \u0c8e\u0cb0\u0ca1\u0cc2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0cb5\u0cc6 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 R \u0c8e\u0c82\u0cac\u0cc1\u0ca6\u0cc1 A \u0ca8 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0cb5\u0cbf\u0cb5\u0cb0\u0ca3\u0cc6\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6",
+        "Both A and R are true but R is not the correct explanation of A / A \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 R \u0c8e\u0cb0\u0ca1\u0cc2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0cb5\u0cc6 \u0c86\u0ca6\u0cb0\u0cc6 R \u0c8e\u0c82\u0cac\u0cc1\u0ca6\u0cc1 A \u0ca8 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0cb5\u0cbf\u0cb5\u0cb0\u0ca3\u0cc6\u0caf\u0cb2\u0ccd\u0cb2",
+        "A is true but R is false / A \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6 \u0c86\u0ca6\u0cb0\u0cc6 R \u0ca4\u0caa\u0ccd\u0caa\u0cbe\u0c97\u0cbf\u0ca6\u0cc6",
+        "A is false but R is true / A \u0ca4\u0caa\u0ccd\u0caa\u0cbe\u0c97\u0cbf\u0ca6\u0cc6 \u0c86\u0ca6\u0cb0\u0cc6 R \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6"
+      ],
+      "correctIndex": 0,
+      "explanation": "\ud83d\udca1 Mnemonic: &quot;KB - Keep Basic&quot; (Kesavananda Bharati preserved the Basic Structure). \u3164\u3164\u27bb Both A and R are correct: The Supreme Court (\u0cb8\u0cc1\u0caa\u0ccd\u0cb0\u0cc0\u0c82 \u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd) limited Parliament&#x27;s power under Article 368 by establishing the Basic Structure doctrine (\u0cae\u0cc2\u0cb2 \u0cb0\u0c9a\u0ca8\u0cc6\u0caf \u0cb8\u0cbf\u0ca6\u0ccd\u0ca7\u0cbe\u0c82\u0ca4) in 1973. | / \ud83d\udca1 Mnemonic: &quot;KB - Keep Basic&quot; (\u0c95\u0cc7\u0cb6\u0cb5\u0cbe\u0ca8\u0c82\u0ca6 \u0cad\u0cbe\u0cb0\u0ca4\u0cbf \u0cae\u0cc2\u0cb2 \u0cb0\u0c9a\u0ca8\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c89\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1). \u3164\u3164\u27bb A \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 R \u0c8e\u0cb0\u0ca1\u0cc2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0cb5\u0cc6: \u0cb8\u0cc1\u0caa\u0ccd\u0cb0\u0cc0\u0c82 \u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd 1973 \u0cb0\u0cb2\u0ccd\u0cb2\u0cbf \u0cae\u0cc2\u0cb2 \u0cb0\u0c9a\u0ca8\u0cc6\u0caf \u0cb8\u0cbf\u0ca6\u0ccd\u0ca7\u0cbe\u0c82\u0ca4\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 (Basic Structure doctrine) \u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0cbf\u0cb8\u0cc1\u0cb5 \u0cae\u0cc2\u0cb2\u0c95 368\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf \u0c85\u0ca1\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0cb8\u0c82\u0cb8\u0ca4\u0ccd\u0ca4\u0cbf\u0ca8 \u0c85\u0ca7\u0cbf\u0c95\u0cbe\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc0\u0cae\u0cbf\u0ca4\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. |",
+      "reference": ""
+    },
+    {
+      "text": "\n            <div class=\"context-box\">\n                Q42. \u29bf Consider the following statements regarding the 86th Constitutional Amendment Act, 2002: / \u29bf 2002 \u0cb0 86\u0ca8\u0cc7 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0c97\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0c82\u0ca4\u0cc6 \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c97\u0ca3\u0cbf\u0cb8\u0cbf:<br><br>i. It made education for children aged 6 to 14 a Fundamental Right. / i. \u0c87\u0ca6\u0cc1 6 \u0cb0\u0cbf\u0c82\u0ca6 14 \u0cb5\u0cb0\u0ccd\u0cb7\u0ca6 \u0cae\u0c95\u0ccd\u0c95\u0cb3\u0cbf\u0c97\u0cc6 \u0cb6\u0cbf\u0c95\u0ccd\u0cb7\u0ca3\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0ca8\u0ccd\u0ca8\u0cbe\u0c97\u0cbf \u0cae\u0cbe\u0ca1\u0cbf\u0ca4\u0cc1.<br><br>ii. It added a new Fundamental Duty for parents/guardians to provide education opportunities. / ii. \u0cb6\u0cbf\u0c95\u0ccd\u0cb7\u0ca3\u0ca6 \u0c85\u0cb5\u0c95\u0cbe\u0cb6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c92\u0ca6\u0c97\u0cbf\u0cb8\u0cc1\u0cb5\u0cc1\u0ca6\u0cc1 \u0caa\u0ccb\u0cb7\u0c95\u0cb0\u0cc1/\u0caa\u0cbe\u0cb2\u0c95\u0cb0 \u0cb9\u0cca\u0cb8 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0c95\u0cb0\u0ccd\u0ca4\u0cb5\u0ccd\u0caf \u0c8e\u0c82\u0ca6\u0cc1 \u0c87\u0ca6\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.<br><br>iii. It added a new Directive Principle regarding early childhood care for children below age six. / iii. \u0c86\u0cb0\u0cc1 \u0cb5\u0cb0\u0ccd\u0cb7\u0c95\u0ccd\u0c95\u0cbf\u0c82\u0ca4 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0cae\u0c95\u0ccd\u0c95\u0cb3\u0cbf\u0c97\u0cc6 \u0cac\u0cbe\u0cb2\u0ccd\u0caf\u0ca6 \u0c86\u0cb0\u0cc8\u0c95\u0cc6\u0caf \u0cac\u0c97\u0ccd\u0c97\u0cc6 \u0cb9\u0cca\u0cb8 \u0cae\u0cbe\u0cb0\u0ccd\u0c97\u0ca6\u0cb0\u0ccd\u0cb6\u0c95 \u0ca4\u0ca4\u0ccd\u0cb5\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c87\u0ca6\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.\n            </div>\n            <b>Q42.</b> Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "i and ii only / i \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 ii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "ii and iii only / ii \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 iii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "i and iii only / i \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 iii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "i, ii and iii / i, ii \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 iii"
+      ],
+      "correctIndex": 3,
+      "explanation": "\u3164\u3164\u27bb Statement i is correct: Added Article 21A (Fundamental Right - \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0cc1). \u3164\u3164\u27bb Statement ii is correct: Added 11th Fundamental Duty (\u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0c95\u0cb0\u0ccd\u0ca4\u0cb5\u0ccd\u0caf). \u3164\u3164\u27bb Statement iii is correct: Substituted Article 45 (DPSP - \u0cae\u0cbe\u0cb0\u0ccd\u0c97\u0ca6\u0cb0\u0ccd\u0cb6\u0c95 \u0ca4\u0ca4\u0ccd\u0cb5). | / \u3164\u3164\u27bb \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 i \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 21\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1 (\u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb9\u0c95\u0ccd\u0c95\u0cc1). \u3164\u3164\u27bb \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 ii \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 11\u0ca8\u0cc7 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0c95\u0cb0\u0ccd\u0ca4\u0cb5\u0ccd\u0caf\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 (Fundamental Duty) \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. \u3164\u3164\u27bb \u0cb9\u0cc7\u0cb3\u0cbf\u0c95\u0cc6 iii \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 45\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 (DPSP) \u0cac\u0ca6\u0cb2\u0cbe\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1. |",
+      "reference": ""
+    },
+    {
+      "text": "\n            <div class=\"context-box\">\n                Q43. \u29bf Match the following articles with the states they provide special status to: / \u29bf \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0cb5\u0cbf\u0ca7\u0cbf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0cb5\u0cc1 \u0cb5\u0cbf\u0cb6\u0cc7\u0cb7 \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0cae\u0cbe\u0ca8 \u0ca8\u0cc0\u0ca1\u0cc1\u0cb5 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c97\u0cb3\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cb9\u0cca\u0c82\u0ca6\u0cbf\u0cb8\u0cbf:<br><br>\u3010List I\u3011 \u3164 \u3164\u3164\u3164\u3164\u3164 \u3010List II\u3011 <br><br>\u2502A. Article 371A \u2502\u3164 \u25021. Nagaland \u2502 \u3164<br><br>\u2502B. Article 371F \u2502\u3164 \u25022. Sikkim \u2502<br><br>\u2502C. Article 371J \u2502\u3164 \u25023. Karnataka \u2502\u3164<br><br>\u2502D. Article 371H \u2502\u3164 \u25024. Arunachal Pradesh \u2502<br><br>\u3164\u3164\u3164\u3164\u3164<br>\u3010\u0caa\u0c9f\u0ccd\u0c9f\u0cbf I\u3011\u3164\u3164\u3164\u3164\u3164\u3164\u3164\u3164 \u3010\u0caa\u0c9f\u0ccd\u0c9f\u0cbf II\u3011 <br><br>\u2502A. Article 371A \u2502\u3164 \u3164 \u25021. \u0ca8\u0cbe\u0c97\u0cbe\u0cb2\u0ccd\u0caf\u0cbe\u0c82\u0ca1\u0ccd \u2502<br><br>\u2502B. Article 371F \u2502\u3164 \u3164\u2502 2. \u0cb8\u0cbf\u0c95\u0ccd\u0c95\u0cbf\u0c82 \u2502<br><br>\u2502C. Article 371J \u2502\u3164\u3164 \u2502 3. \u0c95\u0cb0\u0ccd\u0ca8\u0cbe\u0c9f\u0c95 \u2502<br><br>\u2502D. Article 371H \u2502\u3164\u3164 \u2502 4. \u0c85\u0cb0\u0cc1\u0ca3\u0cbe\u0c9a\u0cb2 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6 \u2502<br>\u3164\u3164\u3164\u3164\u3164\n            </div>\n            <b>Q43.</b> Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "A-1, B-2, C-3, D-4",
+        "A-1, B-3, C-2, D-4",
+        "A-2, B-1, C-3, D-4",
+        "A-4, B-3, C-2, D-1"
+      ],
+      "correctIndex": 0,
+      "explanation": "Pair A is correct: 371A is for Nagaland (13th CA). \u3164\u3164\u27bb Pair B is correct: 371F is for Sikkim (36th CA). \u3164\u3164\u27bb Pair C is correct: 371J is for Hyderabad-Karnataka (98th CA). \u3164\u3164\u27bb Pair D is correct: 371H is for Arunachal Pradesh (55th CA). | / \u0c9c\u0ccb\u0ca1\u0cbf A \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 371\u0c8e \u0ca8\u0cbe\u0c97\u0cbe\u0cb2\u0ccd\u0caf\u0cbe\u0c82\u0ca1\u0ccd\u200c\u0c97\u0cbe\u0c97\u0cbf (13\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf). \u3164\u3164\u27bb \u0c9c\u0ccb\u0ca1\u0cbf B \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 371\u0c8e\u0cab\u0ccd \u0cb8\u0cbf\u0c95\u0ccd\u0c95\u0cbf\u0c82\u0c97\u0cbe\u0c97\u0cbf (36\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf). \u3164\u3164\u27bb \u0c9c\u0ccb\u0ca1\u0cbf C \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 371\u0c9c\u0cc6 \u0cb9\u0cc8\u0ca6\u0cb0\u0cbe\u0cac\u0cbe\u0ca6\u0ccd-\u0c95\u0cb0\u0ccd\u0ca8\u0cbe\u0c9f\u0c95\u0c95\u0ccd\u0c95\u0cbe\u0c97\u0cbf (98\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf). \u3164\u3164\u27bb \u0c9c\u0ccb\u0ca1\u0cbf D \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 371\u0cb9\u0cc6\u0c9a\u0ccd \u0c85\u0cb0\u0cc1\u0ca3\u0cbe\u0c9a\u0cb2 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c95\u0ccd\u0c95\u0cbe\u0c97\u0cbf (55\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf). |",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q44.</b> The 103rd Amendment Act, 2019, inserted which of the following clauses to Article 15 and 16? / 2019 \u0cb0 103\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 15 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 16\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0c97\u0cc6 \u0caf\u0cbe\u0cb5 \u0c89\u0caa\u0cb5\u0cbf\u0ca7\u0cbf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "15(5) and 16(5)",
+        "15(4) and 16(4)",
+        "15(6) and 16(6)",
+        "15(7) and 16(7)"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 103rd Amendment added clause (6) to both Article 15 and Article 16. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 103\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 15(6) \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 16(6) \u0c89\u0caa\u0cb5\u0cbf\u0ca7\u0cbf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q45.</b> Which of the following amendments is referred to as the &quot;reset button&quot; for democratic values, post-emergency? / \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb8\u0ccd\u0ca5\u0cbf\u0ca4\u0cbf\u0caf \u0ca8\u0c82\u0ca4\u0cb0\u0ca6 \u0caa\u0ccd\u0cb0\u0c9c\u0cbe\u0cb8\u0ca4\u0ccd\u0ca4\u0cbe\u0ca4\u0ccd\u0cae\u0c95 \u0cae\u0ccc\u0cb2\u0ccd\u0caf\u0c97\u0cb3 &quot;\u0cb0\u0cbf\u0cb8\u0cc6\u0c9f\u0ccd \u0cac\u0c9f\u0ca8\u0ccd&quot; \u0c8e\u0c82\u0ca6\u0cc1 \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c95\u0cb0\u0cc6\u0caf\u0cb2\u0cbe\u0c97\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6?",
+      "options": [
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 44th Amendment (1978) undone the damage of the 42nd Amendment and restored judicial powers. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1978) 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cbf\u0c82\u0ca6\u0cbe\u0ca6 \u0cb9\u0cbe\u0ca8\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cb0\u0cbf\u0caa\u0ca1\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0c82\u0c97 \u0c85\u0ca7\u0cbf\u0c95\u0cbe\u0cb0\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb9\u0cbe\u0c97\u0cc2 \u0cae\u0cc2\u0cb2\u0cad\u0cc2\u0ca4 \u0cb0\u0c95\u0ccd\u0cb7\u0ca3\u0cc6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0cb0\u0cc1\u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q46.</b> Administrative Tribunals (Article 323A) were introduced by which amendment? / \u0c86\u0ca1\u0cb3\u0cbf\u0ca4\u0cbe\u0ca4\u0ccd\u0cae\u0c95 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cae\u0c82\u0ca1\u0cb3\u0cbf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf \u0cae\u0cc2\u0cb2\u0c95 \u0caa\u0cb0\u0cbf\u0c9a\u0caf\u0cbf\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "15th Amendment / 15\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 42nd Amendment (1976) added Part XIV-A for Administrative Tribunals. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1976) \u0cb8\u0cc7\u0cb5\u0cbe \u0cb5\u0cbf\u0cb7\u0caf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca8\u0cbf\u0cb0\u0ccd\u0ca7\u0cb0\u0cbf\u0cb8\u0cb2\u0cc1 \u0c86\u0ca1\u0cb3\u0cbf\u0ca4\u0cbe\u0ca4\u0ccd\u0cae\u0c95 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cae\u0c82\u0ca1\u0cb3\u0cbf\u0c97\u0cb3\u0cbf\u0c97\u0cbe\u0c97\u0cbf \u0cad\u0cbe\u0c97 XIV-A \u0c85\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q47.</b> The Goods and Services Tax (GST) came into force in India on which date following the 101st Amendment? / 101\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf \u0ca8\u0c82\u0ca4\u0cb0 \u0cb8\u0cb0\u0c95\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb8\u0cc7\u0cb5\u0cbe \u0ca4\u0cc6\u0cb0\u0cbf\u0c97\u0cc6 \u0caf\u0cbe\u0cb5 \u0ca6\u0cbf\u0ca8\u0cbe\u0c82\u0c95\u0ca6\u0c82\u0ca6\u0cc1 \u0c9c\u0cbe\u0cb0\u0cbf\u0c97\u0cc6 \u0cac\u0c82\u0ca6\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "26th January 2017 / 26\u0ca8\u0cc7 \u0c9c\u0ca8\u0cb5\u0cb0\u0cbf 2017",
+        "1st July 2017 / 1\u0ca8\u0cc7 \u0c9c\u0cc1\u0cb2\u0cc8 2017",
+        "15th August 2017 / 15\u0ca8\u0cc7 \u0c86\u0c97\u0cb8\u0ccd\u0c9f\u0ccd 2017",
+        "1st April 2017 / 1\u0ca8\u0cc7 \u0c8f\u0caa\u0ccd\u0cb0\u0cbf\u0cb2\u0ccd 2017"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The GST was officially launched across India on 1st July 2017. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 101\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 2016 \u0cb0\u0cb2\u0ccd\u0cb2\u0cbf \u0c85\u0c82\u0c97\u0cc0\u0c95\u0cb0\u0cbf\u0cb8\u0cb2\u0cbe\u0c97\u0cbf\u0ca6\u0ccd\u0ca6\u0cb0\u0cc2, \u0cb8\u0cb0\u0c95\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb8\u0cc7\u0cb5\u0cbe \u0ca4\u0cc6\u0cb0\u0cbf\u0c97\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0ca7\u0cbf\u0c95\u0cc3\u0ca4\u0cb5\u0cbe\u0c97\u0cbf 1\u0ca8\u0cc7 \u0c9c\u0cc1\u0cb2\u0cc8 2017 \u0cb0\u0c82\u0ca6\u0cc1 \u0cad\u0cbe\u0cb0\u0ca4\u0ca6\u0cbe\u0ca6\u0ccd\u0caf\u0c82\u0ca4 \u0c9c\u0cbe\u0cb0\u0cbf\u0c97\u0cc6 \u0ca4\u0cb0\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q48.</b> Which article was inserted by the 102nd Amendment Act to grant constitutional status to the National Commission for Backward Classes? / \u0cb9\u0cbf\u0c82\u0ca6\u0cc1\u0cb3\u0cbf\u0ca6 \u0cb5\u0cb0\u0ccd\u0c97\u0c97\u0cb3 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0c86\u0caf\u0ccb\u0c97\u0c95\u0ccd\u0c95\u0cc6 \u0cb8\u0cbe\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cbf\u0c95 \u0cb8\u0ccd\u0ca5\u0cbe\u0ca8\u0cae\u0cbe\u0ca8 \u0ca8\u0cc0\u0ca1\u0cb2\u0cc1 102\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf \u0cae\u0cc2\u0cb2\u0c95 \u0caf\u0cbe\u0cb5 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "Article 338A / 338\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 338B / 338\u0cac\u0cbf \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 340 / 340\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 342A / 342\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 102nd Amendment (2018) inserted Article 338B for the NCBC. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 102\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2018) \u0cb9\u0cbf\u0c82\u0ca6\u0cc1\u0cb3\u0cbf\u0ca6 \u0cb5\u0cb0\u0ccd\u0c97\u0c97\u0cb3 \u0cb0\u0cbe\u0cb7\u0ccd\u0c9f\u0ccd\u0cb0\u0cc0\u0caf \u0c86\u0caf\u0ccb\u0c97\u0c95\u0ccd\u0c95\u0cbe\u0c97\u0cbf 338\u0cac\u0cbf \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q49.</b> The 1st Amendment Act, 1951, added which new grounds of restriction to the Freedom of Speech and Expression? / 1951 \u0cb0 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0cb5\u0cbe\u0c95\u0ccd \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c85\u0cad\u0cbf\u0cb5\u0ccd\u0caf\u0c95\u0ccd\u0ca4\u0cbf \u0cb8\u0ccd\u0cb5\u0cbe\u0ca4\u0c82\u0ca4\u0ccd\u0cb0\u0ccd\u0caf\u0c95\u0ccd\u0c95\u0cc6 \u0caf\u0cbe\u0cb5 \u0cb9\u0cca\u0cb8 \u0ca8\u0cbf\u0cb0\u0ccd\u0cac\u0c82\u0ca7\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "Public Order / \u0cb8\u0cbe\u0cb0\u0ccd\u0cb5\u0c9c\u0ca8\u0cbf\u0c95 \u0cb8\u0cc1\u0cb5\u0ccd\u0caf\u0cb5\u0cb8\u0ccd\u0ca5\u0cc6",
+        "Friendly relations with foreign states / \u0cb5\u0cbf\u0ca6\u0cc7\u0cb6\u0c97\u0cb3\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cb8\u0ccc\u0cb9\u0cbe\u0cb0\u0ccd\u0ca6 \u0cb8\u0c82\u0cac\u0c82\u0ca7",
+        "Incitement to an offence / \u0c85\u0caa\u0cb0\u0cbe\u0ca7\u0c95\u0ccd\u0c95\u0cc6 \u0caa\u0ccd\u0cb0\u0c9a\u0ccb\u0ca6\u0ca8\u0cc6",
+        "All of the above / \u0cae\u0cc7\u0cb2\u0cbf\u0ca8 \u0c8e\u0cb2\u0ccd\u0cb2\u0cb5\u0cc2"
+      ],
+      "correctIndex": 3,
+      "explanation": "Option (d) is correct: The 1st Amendment introduced these three additional restrictions to Article 19(2). | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 4 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 19(2) \u0cb5\u0cbf\u0ca7\u0cbf\u0c97\u0cc6 \u0cb8\u0cbe\u0cb0\u0ccd\u0cb5\u0c9c\u0ca8\u0cbf\u0c95 \u0cb8\u0cc1\u0cb5\u0ccd\u0caf\u0cb5\u0cb8\u0ccd\u0ca5\u0cc6, \u0cb5\u0cbf\u0ca6\u0cc7\u0cb6\u0c97\u0cb3\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0cb8\u0ccc\u0cb9\u0cbe\u0cb0\u0ccd\u0ca6 \u0cb8\u0c82\u0cac\u0c82\u0ca7 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c85\u0caa\u0cb0\u0cbe\u0ca7\u0c95\u0ccd\u0c95\u0cc6 \u0caa\u0ccd\u0cb0\u0c9a\u0ccb\u0ca6\u0ca8\u0cc6 \u0c8e\u0c82\u0cac \u0cae\u0cc2\u0cb0\u0cc1 \u0cb9\u0cc6\u0c9a\u0ccd\u0c9a\u0cc1\u0cb5\u0cb0\u0cbf \u0ca8\u0cbf\u0cb0\u0ccd\u0cac\u0c82\u0ca7\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q50.</b> The 103rd Amendment Act, 2019, follows the mandate of which Directive Principle? / 2019 \u0cb0 103\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0caf\u0cbe\u0cb5 \u0cae\u0cbe\u0cb0\u0ccd\u0c97\u0ca6\u0cb0\u0ccd\u0cb6\u0c95 \u0ca4\u0ca4\u0ccd\u0cb5\u0ca6 \u0c86\u0ca6\u0cc7\u0cb6\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c85\u0ca8\u0cc1\u0cb8\u0cb0\u0cbf\u0cb8\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6?",
+      "options": [
+        "Article 44 / 44\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 46 / 46\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 40 / 40\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 45 / 45\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: Article 46 states that the State should protect the educational and economic interests of the weaker sections. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 46\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0cc1 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0cb5\u0cc1 \u0ca6\u0cc1\u0cb0\u0ccd\u0cac\u0cb2 \u0cb5\u0cb0\u0ccd\u0c97\u0c97\u0cb3 \u0cb6\u0cc8\u0c95\u0ccd\u0cb7\u0ca3\u0cbf\u0c95 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c86\u0cb0\u0ccd\u0ca5\u0cbf\u0c95 \u0cb9\u0cbf\u0ca4\u0cbe\u0cb8\u0c95\u0ccd\u0ca4\u0cbf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb0\u0c95\u0ccd\u0cb7\u0cbf\u0cb8\u0cac\u0cc7\u0c95\u0cc1 \u0c8e\u0c82\u0ca6\u0cc1 \u0cb9\u0cc7\u0cb3\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6.",
+      "reference": ""
+    },
+    {
+      "text": "\n            <div class=\"context-box\">\n                Q51. \u29bf Consider the following pairs regarding Panchayati Raj (73rd Amendment): / \u29bf \u0caa\u0c82\u0c9a\u0cbe\u0caf\u0ca4\u0ccd \u0cb0\u0cbe\u0c9c\u0ccd (73\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf) \u0c97\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6\u0c82\u0ca4\u0cc6 \u0c88 \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c9c\u0ccb\u0ca1\u0cbf\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c97\u0ca3\u0cbf\u0cb8\u0cbf:<br><br>i. Part IX - The Panchayats / i. \u0cad\u0cbe\u0c97 IX - \u0caa\u0c82\u0c9a\u0cbe\u0caf\u0ca4\u0ccd\u200c\u0c97\u0cb3\u0cc1<br><br>ii. 11th Schedule - 29 functional items / ii. 11\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf - 29 \u0c95\u0cbe\u0cb0\u0ccd\u0caf\u0c95\u0cbe\u0cb0\u0cbf \u0cb5\u0cbf\u0cb7\u0caf\u0c97\u0cb3\u0cc1<br><br>iii. Article 243A - Gram Sabha / iii. 243\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf - \u0c97\u0ccd\u0cb0\u0cbe\u0cae \u0cb8\u0cad\u0cc6<br>\u3164\u3164\u3164\u3164\u3164\n            </div>\n            <b>Q51.</b> Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+      "options": [
+        "Select the correct answer using the code given below / \u0c95\u0cc6\u0cb3\u0c97\u0cbf\u0ca8 \u0c86\u0caf\u0ccd\u0c95\u0cc6\u0c97\u0cb3\u0cbf\u0c82\u0ca6 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0ca6 \u0c89\u0ca4\u0ccd\u0ca4\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c86\u0caf\u0ccd\u0c95\u0cc6 \u0cae\u0cbe\u0ca1\u0cbf.",
+        "i and ii only / i \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 ii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "ii and iii only / ii \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 iii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "i and iii only / i \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 iii \u0cae\u0cbe\u0ca4\u0ccd\u0cb0",
+        "i, ii and iii / i, ii \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 iii"
+      ],
+      "correctIndex": 4,
+      "explanation": "Option (a) is correct: All pairs are correct: The 73rd Amendment (1992) constitutionalized rural local bodies. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 1 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: \u0c8e\u0cb2\u0ccd\u0cb2\u0cbe \u0c9c\u0ccb\u0ca1\u0cbf\u0c97\u0cb3\u0cc1 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0cb5\u0cc6: 73\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1992) \u0c88 \u0ca8\u0cbf\u0cb0\u0ccd\u0ca6\u0cbf\u0cb7\u0ccd\u0c9f \u0ca8\u0cbf\u0cac\u0c82\u0ca7\u0ca8\u0cc6\u0c97\u0cb3\u0cca\u0c82\u0ca6\u0cbf\u0c97\u0cc6 \u0c97\u0ccd\u0cb0\u0cbe\u0cae\u0cc0\u0ca3 \u0cb8\u0ccd\u0ca5\u0cb3\u0cc0\u0caf \u0cb8\u0c82\u0cb8\u0ccd\u0ca5\u0cc6\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0cb8\u0cbe\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cbf\u0c95 \u0cae\u0cbe\u0ca8\u0ccd\u0caf\u0ca4\u0cc6 \u0ca8\u0cc0\u0ca1\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q52.</b> Through which amendment was the tenure of State Public Service Commission (SPSC) members raised from 60 to 62 years? / \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf \u0cae\u0cc2\u0cb2\u0c95 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf \u0cb8\u0cbe\u0cb0\u0ccd\u0cb5\u0c9c\u0ca8\u0cbf\u0c95 \u0cb8\u0cc7\u0cb5\u0cbe \u0c86\u0caf\u0ccb\u0c97\u0ca6 \u0cb8\u0ca6\u0cb8\u0ccd\u0caf\u0cb0 \u0c85\u0ca7\u0cbf\u0c95\u0cbe\u0cb0\u0cbe\u0cb5\u0ca7\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 60 \u0cb0\u0cbf\u0c82\u0ca6 62 \u0cb5\u0cb0\u0ccd\u0cb7\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0cb9\u0cc6\u0c9a\u0ccd\u0c9a\u0cbf\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "15th Amendment / 15\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "41st Amendment / 41\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "31st Amendment / 31\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 41st Amendment (1976) raised the retirement age of members of SPSC. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 41\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1976) \u0cb0\u0cbe\u0c9c\u0ccd\u0caf \u0cb8\u0cbe\u0cb0\u0ccd\u0cb5\u0c9c\u0ca8\u0cbf\u0c95 \u0cb8\u0cc7\u0cb5\u0cbe \u0c86\u0caf\u0ccb\u0c97\u0ca6 \u0cb8\u0ca6\u0cb8\u0ccd\u0caf\u0cb0 \u0ca8\u0cbf\u0cb5\u0cc3\u0ca4\u0ccd\u0ca4\u0cbf \u0cb5\u0caf\u0cb8\u0ccd\u0cb8\u0ca8\u0ccd\u0ca8\u0cc1 60 \u0cb0\u0cbf\u0c82\u0ca6 62 \u0c95\u0ccd\u0c95\u0ccd\u0c95\u0cc6 \u0cb9\u0cc6\u0c9a\u0ccd\u0c9a\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q53.</b> The 74th Amendment Act, 1992, added which new schedule to the Constitution? / 1992 \u0cb0 74\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0cb8\u0c82\u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0c95\u0ccd\u0c95\u0cc6 \u0caf\u0cbe\u0cb5 \u0cb9\u0cca\u0cb8 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "11th Schedule / 11\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf",
+        "12th Schedule / 12\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf",
+        "9th Schedule / 9\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf",
+        "10th Schedule / 10\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 12th Schedule contains 18 functional items for Municipalities. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 74\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0ca8\u0c97\u0cb0\u0cb8\u0cad\u0cc6\u0c97\u0cb3\u0cbf\u0c97\u0cbe\u0c97\u0cbf 12\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q54.</b> The 100th Amendment (2015) resulted in the exchange of how many enclaves to Bangladesh? / 100\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2015) \u0cac\u0cbe\u0c82\u0c97\u0ccd\u0cb2\u0cbe\u0ca6\u0cc7\u0cb6\u0c95\u0ccd\u0c95\u0cc6 \u0c8e\u0cb7\u0ccd\u0c9f\u0cc1 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c97\u0cb3 \u0cb5\u0cbf\u0ca8\u0cbf\u0cae\u0caf\u0c95\u0ccd\u0c95\u0cc6 \u0c95\u0cbe\u0cb0\u0ca3\u0cb5\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "111",
+        "75",
+        "100",
+        "51"
+      ],
+      "correctIndex": 3,
+      "explanation": "Option (d) is correct: India transferred 51 enclaves to Bangladesh. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 4 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: \u0cad\u0cbe\u0cb0\u0ca4\u0cb5\u0cc1 51 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0cac\u0cbe\u0c82\u0c97\u0ccd\u0cb2\u0cbe\u0ca6\u0cc7\u0cb6\u0c95\u0ccd\u0c95\u0cc6 \u0cb5\u0cb0\u0ccd\u0c97\u0cbe\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cac\u0ca6\u0cb2\u0cbe\u0c97\u0cbf 111 \u0caa\u0ccd\u0cb0\u0ca6\u0cc7\u0cb6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0ca1\u0cc6\u0caf\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q55.</b> The &quot;Right to Property&quot; became a legal right under which newly inserted article? / \u0c86\u0cb8\u0ccd\u0ca4\u0cbf\u0caf \u0cb9\u0c95\u0ccd\u0c95\u0cc1 \u0cb9\u0cca\u0cb8\u0ca6\u0cbe\u0c97\u0cbf \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cb2\u0ccd\u0caa\u0c9f\u0ccd\u0c9f \u0caf\u0cbe\u0cb5 \u0cb5\u0cbf\u0ca7\u0cbf\u0caf \u0c85\u0ca1\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0c95\u0cbe\u0ca8\u0cc2\u0ca8\u0cc1\u0cac\u0ca6\u0ccd\u0ca7 \u0cb9\u0c95\u0ccd\u0c95\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "Article 31 / 31\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 19 / 19\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 300A / 300\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 21 / 21\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 44th Amendment moved the right to property to Part XII, Article 300A. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 \u0c86\u0cb8\u0ccd\u0ca4\u0cbf\u0caf \u0cb9\u0c95\u0ccd\u0c95\u0ca8\u0ccd\u0ca8\u0cc1 \u0cad\u0cbe\u0c97 XII \u0cb0 300\u0c8e \u0cb5\u0cbf\u0ca7\u0cbf\u0c97\u0cc6 \u0cb5\u0cb0\u0ccd\u0c97\u0cbe\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q56.</b> The 104th Amendment Act extended SC/ST reservation in Lok Sabha and Assemblies until which date? / 104\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0cb2\u0ccb\u0c95\u0cb8\u0cad\u0cc6 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb5\u0cbf\u0ca7\u0cbe\u0ca8\u0cb8\u0cad\u0cc6\u0c97\u0cb3\u0cb2\u0ccd\u0cb2\u0cbf SC/ST \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca6\u0cbf\u0ca8\u0cbe\u0c82\u0c95\u0ca6\u0cb5\u0cb0\u0cc6\u0c97\u0cc6 \u0cb5\u0cbf\u0cb8\u0ccd\u0ca4\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "25th January 2025 / 25\u0ca8\u0cc7 \u0c9c\u0ca8\u0cb5\u0cb0\u0cbf 2025",
+        "15th August 2030 / 15\u0ca8\u0cc7 \u0c86\u0c97\u0cb8\u0ccd\u0c9f\u0ccd 2030",
+        "25th January 2030 / 25\u0ca8\u0cc7 \u0c9c\u0ca8\u0cb5\u0cb0\u0cbf 2030",
+        "26th January 2030 / 26\u0ca8\u0cc7 \u0c9c\u0ca8\u0cb5\u0cb0\u0cbf 2030"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 104th Amendment (2019) extended the political reservation for another 10 years. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 104\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (2019) \u0cb0\u0cbe\u0c9c\u0c95\u0cc0\u0caf \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0c87\u0ca8\u0ccd\u0ca8\u0cc2 10 \u0cb5\u0cb0\u0ccd\u0cb7\u0c97\u0cb3\u0cb5\u0cb0\u0cc6\u0c97\u0cc6 \u0cb5\u0cbf\u0cb8\u0ccd\u0ca4\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q57.</b> Which amendment act provided for the inclusion of the Tamil Nadu Reservation Act (69% reservation) in the Ninth Schedule? / \u0ca4\u0cae\u0cbf\u0cb3\u0cc1\u0ca8\u0cbe\u0ca1\u0cc1 \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 9\u0ca8\u0cc7 \u0c85\u0ca8\u0cc1\u0cb8\u0cc2\u0c9a\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cb2\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0c85\u0cb5\u0c95\u0cbe\u0cb6 \u0ca8\u0cc0\u0ca1\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "73rd Amendment / 73\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "76th Amendment / 76\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "81st Amendment / 81\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "93rd Amendment / 93\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: The 76th Amendment (1994) protected the 69% reservation of Tamil Nadu from judicial review. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 76\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1994) \u0ca4\u0cae\u0cbf\u0cb3\u0cc1\u0ca8\u0cbe\u0ca1\u0cbf\u0ca8 \u0cb6\u0cc7. 69 \u0cb0\u0cb7\u0ccd\u0c9f\u0cc1 \u0cae\u0cc0\u0cb8\u0cb2\u0cbe\u0ca4\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0c82\u0c97 \u0caa\u0cb0\u0cbf\u0cb6\u0cc0\u0cb2\u0ca8\u0cc6\u0caf\u0cbf\u0c82\u0ca6 \u0cb0\u0c95\u0ccd\u0cb7\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q58.</b> Through which amendment was the power of &quot;Judicial Review&quot; of the Supreme Court and High Courts restored after being curtailed during Emergency? / \u0ca4\u0cc1\u0cb0\u0ccd\u0ca4\u0cc1 \u0caa\u0cb0\u0cbf\u0cb8\u0ccd\u0ca5\u0cbf\u0ca4\u0cbf\u0caf\u0cb2\u0ccd\u0cb2\u0cbf \u0c95\u0ca1\u0cbf\u0ca4\u0c97\u0cca\u0cb3\u0cbf\u0cb8\u0cb2\u0cbe\u0c97\u0cbf\u0ca6\u0ccd\u0ca6 \u0cb8\u0cc1\u0caa\u0ccd\u0cb0\u0cc0\u0c82 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb9\u0cc8\u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd\u200c\u0c97\u0cb3 &quot;\u0ca8\u0ccd\u0caf\u0cbe\u0caf\u0cbe\u0c82\u0c97 \u0cb5\u0cbf\u0cae\u0cb0\u0ccd\u0cb6\u0cc6&#x27;\u0caf \u0c85\u0ca7\u0cbf\u0c95\u0cbe\u0cb0\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf \u0cae\u0cc2\u0cb2\u0c95 \u0cae\u0cb0\u0cc1\u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0cbf\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "43rd Amendment / 43\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 2,
+      "explanation": "Option (c) is correct: The 43rd Amendment (1977) specifically restored the jurisdiction of the SC and HCs to judge the validity of laws. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 3 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 43\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1977) \u0c95\u0cbe\u0ca8\u0cc2\u0ca8\u0cc1\u0c97\u0cb3 \u0cb8\u0cbf\u0c82\u0ca7\u0cc1\u0ca4\u0ccd\u0cb5\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0ca8\u0cbf\u0cb0\u0ccd\u0ca3\u0caf\u0cbf\u0cb8\u0cb2\u0cc1 \u0cb8\u0cc1\u0caa\u0ccd\u0cb0\u0cc0\u0c82 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0cb9\u0cc8\u0c95\u0ccb\u0cb0\u0ccd\u0c9f\u0ccd\u200c\u0c97\u0cb3 \u0c85\u0ca7\u0cbf\u0c95\u0cbe\u0cb0 \u0cb5\u0ccd\u0caf\u0cbe\u0caa\u0ccd\u0ca4\u0cbf\u0caf\u0ca8\u0ccd\u0ca8\u0cc1 \u0cae\u0cb0\u0cc1\u0cb8\u0ccd\u0ca5\u0cbe\u0caa\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q59.</b> The 97th Amendment Act, 2011, inserted which Directive Principle relating to Co-operative Societies? / 2011 \u0cb0 97\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf \u0c95\u0cbe\u0caf\u0cbf\u0ca6\u0cc6\u0caf\u0cc1 \u0cb8\u0cb9\u0c95\u0cbe\u0cb0 \u0cb8\u0c82\u0c98\u0c97\u0cb3\u0cbf\u0c97\u0cc6 \u0cb8\u0c82\u0cac\u0c82\u0ca7\u0cbf\u0cb8\u0cbf\u0ca6 \u0caf\u0cbe\u0cb5 \u0cae\u0cbe\u0cb0\u0ccd\u0c97\u0ca6\u0cb0\u0ccd\u0cb6\u0c95 \u0ca4\u0ca4\u0ccd\u0cb5\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "Article 43A / 43A \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 43B / 43B \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 40 / 40\u0ca8\u0cc7 \u0cb5\u0cbf\u0ca7\u0cbf",
+        "Article 48A / 48A \u0cb5\u0cbf\u0ca7\u0cbf"
+      ],
+      "correctIndex": 1,
+      "explanation": "Option (b) is correct: Article 43B mandates the State to promote voluntary formation and democratic control of co-operative societies. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 2 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 43\u0cac\u0cbf \u0cb5\u0cbf\u0ca7\u0cbf\u0caf\u0cc1 \u0cb8\u0cb9\u0c95\u0cbe\u0cb0 \u0cb8\u0c82\u0c98\u0c97\u0cb3 \u0cb8\u0ccd\u0cb5\u0caf\u0c82\u0caa\u0ccd\u0cb0\u0cc7\u0cb0\u0cbf\u0ca4 \u0cb0\u0c9a\u0ca8\u0cc6 \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0caa\u0ccd\u0cb0\u0c9c\u0cbe\u0cb8\u0ca4\u0ccd\u0ca4\u0cbe\u0ca4\u0ccd\u0cae\u0c95 \u0ca8\u0cbf\u0caf\u0c82\u0ca4\u0ccd\u0cb0\u0ca3\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0c89\u0ca4\u0ccd\u0ca4\u0cc7\u0c9c\u0cbf\u0cb8\u0cb2\u0cc1 \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0c95\u0ccd\u0c95\u0cc6 \u0c86\u0ca6\u0cc7\u0cb6\u0cbf\u0cb8\u0cc1\u0ca4\u0ccd\u0ca4\u0ca6\u0cc6.",
+      "reference": ""
+    },
+    {
+      "text": "<b>Q60.</b> Through which amendment were the terms &quot;Socialist&quot; and &quot;Secular&quot; added to the Preamble? / \u0cb8\u0cae\u0cbe\u0c9c\u0cb5\u0cbe\u0ca6\u0cbf \u0cae\u0ca4\u0ccd\u0ca4\u0cc1 \u0c9c\u0cbe\u0ca4\u0ccd\u0caf\u0ca4\u0cc0\u0ca4 \u0caa\u0ca6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caf\u0cbe\u0cb5 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf \u0cae\u0cc2\u0cb2\u0c95 \u0caa\u0cc0\u0ca0\u0cbf\u0c95\u0cc6\u0c97\u0cc6 \u0cb8\u0cc7\u0cb0\u0cbf\u0cb8\u0cb2\u0cbe\u0caf\u0cbf\u0ca4\u0cc1?",
+      "options": [
+        "44th Amendment / 44\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "24th Amendment / 24\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "1st Amendment / 1\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf",
+        "42nd Amendment / 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf"
+      ],
+      "correctIndex": 3,
+      "explanation": "Option (d) is correct: The 42nd Amendment (1976) introduced these terms to define the nature of the Indian State. | / \u0c86\u0caf\u0ccd\u0c95\u0cc6 4 \u0cb8\u0cb0\u0cbf\u0caf\u0cbe\u0c97\u0cbf\u0ca6\u0cc6: 42\u0ca8\u0cc7 \u0ca4\u0cbf\u0ca6\u0ccd\u0ca6\u0cc1\u0caa\u0ca1\u0cbf\u0caf\u0cc1 (1976) \u0cad\u0cbe\u0cb0\u0ca4\u0cc0\u0caf \u0cb0\u0cbe\u0c9c\u0ccd\u0caf\u0ca6 \u0cb8\u0ccd\u0cb5\u0cb0\u0cc2\u0caa\u0cb5\u0ca8\u0ccd\u0ca8\u0cc1 \u0cb5\u0ccd\u0caf\u0cbe\u0c96\u0ccd\u0caf\u0cbe\u0ca8\u0cbf\u0cb8\u0cb2\u0cc1 \u0c88 \u0caa\u0ca6\u0c97\u0cb3\u0ca8\u0ccd\u0ca8\u0cc1 \u0caa\u0cb0\u0cbf\u0c9a\u0caf\u0cbf\u0cb8\u0cbf\u0ca4\u0cc1.`",
+      "reference": ""
+    }
+  ],
+  "leaderboard": {
+    "rankings": [],
+    "question_stats": {
+      "0": {
+        "correct": 0,
+        "total": 0
+      },
+      "1": {
+        "correct": 0,
+        "total": 0
+      },
+      "2": {
+        "correct": 0,
+        "total": 0
+      },
+      "3": {
+        "correct": 0,
+        "total": 0
+      },
+      "4": {
+        "correct": 0,
+        "total": 0
+      },
+      "5": {
+        "correct": 0,
+        "total": 0
+      },
+      "6": {
+        "correct": 0,
+        "total": 0
+      },
+      "7": {
+        "correct": 0,
+        "total": 0
+      },
+      "8": {
+        "correct": 0,
+        "total": 0
+      },
+      "9": {
+        "correct": 0,
+        "total": 0
+      },
+      "10": {
+        "correct": 0,
+        "total": 0
+      },
+      "11": {
+        "correct": 0,
+        "total": 0
+      },
+      "12": {
+        "correct": 0,
+        "total": 0
+      },
+      "13": {
+        "correct": 0,
+        "total": 0
+      },
+      "14": {
+        "correct": 0,
+        "total": 0
+      },
+      "15": {
+        "correct": 0,
+        "total": 0
+      },
+      "16": {
+        "correct": 0,
+        "total": 0
+      },
+      "17": {
+        "correct": 0,
+        "total": 0
+      },
+      "18": {
+        "correct": 0,
+        "total": 0
+      },
+      "19": {
+        "correct": 0,
+        "total": 0
+      },
+      "20": {
+        "correct": 0,
+        "total": 0
+      },
+      "21": {
+        "correct": 0,
+        "total": 0
+      },
+      "22": {
+        "correct": 0,
+        "total": 0
+      },
+      "23": {
+        "correct": 0,
+        "total": 0
+      },
+      "24": {
+        "correct": 0,
+        "total": 0
+      },
+      "25": {
+        "correct": 0,
+        "total": 0
+      },
+      "26": {
+        "correct": 0,
+        "total": 0
+      },
+      "27": {
+        "correct": 0,
+        "total": 0
+      },
+      "28": {
+        "correct": 0,
+        "total": 0
+      },
+      "29": {
+        "correct": 0,
+        "total": 0
+      },
+      "30": {
+        "correct": 0,
+        "total": 0
+      },
+      "31": {
+        "correct": 0,
+        "total": 0
+      },
+      "32": {
+        "correct": 0,
+        "total": 0
+      },
+      "33": {
+        "correct": 0,
+        "total": 0
+      },
+      "34": {
+        "correct": 0,
+        "total": 0
+      },
+      "35": {
+        "correct": 0,
+        "total": 0
+      },
+      "36": {
+        "correct": 0,
+        "total": 0
+      },
+      "37": {
+        "correct": 0,
+        "total": 0
+      },
+      "38": {
+        "correct": 0,
+        "total": 0
+      },
+      "39": {
+        "correct": 0,
+        "total": 0
+      },
+      "40": {
+        "correct": 0,
+        "total": 0
+      },
+      "41": {
+        "correct": 0,
+        "total": 0
+      },
+      "42": {
+        "correct": 0,
+        "total": 0
+      },
+      "43": {
+        "correct": 0,
+        "total": 0
+      },
+      "44": {
+        "correct": 0,
+        "total": 0
+      },
+      "45": {
+        "correct": 0,
+        "total": 0
+      },
+      "46": {
+        "correct": 0,
+        "total": 0
+      },
+      "47": {
+        "correct": 0,
+        "total": 0
+      },
+      "48": {
+        "correct": 0,
+        "total": 0
+      },
+      "49": {
+        "correct": 0,
+        "total": 0
+      },
+      "50": {
+        "correct": 0,
+        "total": 0
+      },
+      "51": {
+        "correct": 0,
+        "total": 0
+      },
+      "52": {
+        "correct": 0,
+        "total": 0
+      },
+      "53": {
+        "correct": 0,
+        "total": 0
+      },
+      "54": {
+        "correct": 0,
+        "total": 0
+      },
+      "55": {
+        "correct": 0,
+        "total": 0
+      },
+      "56": {
+        "correct": 0,
+        "total": 0
+      },
+      "57": {
+        "correct": 0,
+        "total": 0
+      },
+      "58": {
+        "correct": 0,
+        "total": 0
+      },
+      "59": {
+        "correct": 0,
+        "total": 0
+      }
+    }
+  }
+};
+
+(function(){
+  // ----- Config from quizData.settings -----
+  const TOTAL_TIME = (quizData.settings && quizData.settings.totalTimeSec) || 20*60;
+  const NEGATIVE = (quizData.settings && quizData.settings.negativeMarkPerWrong) || (1/3);
+
+  // ----- State -----
+  const state = {
+    current: 0,
+    answers: Array(quizData.questions.length).fill(null),
+    markedForReview: Array(quizData.questions.length).fill(false),
+    startTime: new Date(),
+    timePerQ: Array(quizData.questions.length).fill(0),
+    submitted: false,
+    inReviewMode: false,
+    darkMode: false,
+    totalTime: TOTAL_TIME,
+    negativeMark: NEGATIVE,
+    avgTime: 0,
+    timerInterval: null,
+    qTimerInterval: null,
+    lastSoundIdx: -1,
+    currentLang: 'both', // 'both', 'hn', 'en'
+    currentFontSize: 16 // Default px size
+  };
+
+  // ----- Elements -----
+  const questionArea = document.getElementById('questionArea');
+  const resultsContainer = document.getElementById('resultsContainer');
+  const submitBtn = document.getElementById('submitBtn');
+  const qListGrid = document.getElementById('qList');
+  const themeToggle = document.getElementById('themeToggle');
+  const clickSound = document.getElementById('clickSound');
+  const correctSound = document.getElementById('correctSound');
+  const wrongSound = document.getElementById('wrongSound');
+  const quizNav = document.getElementById('quizNav');
+  const langToggleBtn = document.getElementById('langToggleBtn');
+
+  // ----- Init -----
+  document.addEventListener('DOMContentLoaded', () => {
+    setupHomePage();
+    document.getElementById('startQuizBtn').addEventListener('click', startQuiz);
+  });
+
+  function setupHomePage() {
+    const totalQuestions = quizData.questions.length;
+    const totalTimeMinutes = Math.floor(quizData.settings.totalTimeSec / 60);
+    const negativeMark = quizData.settings.negativeMarkPerWrong;
+
+    // Linkify Topic Name logic
+    let rawTopic = quizData.settings.topic || "General Knowledge";
+
+    // Sanitize HTML entities to prevent XSS
+    rawTopic = rawTopic.replace(/&/g, "&amp;")
+                       .replace(/</g, "&lt;")
+                       .replace(/>/g, "&gt;")
+                       .replace(/"/g, "&quot;")
+                       .replace(/'/g, "&#039;");
+
+    // Regex to detect URLs and convert to <a> tags
+    const topicWithLinks = rawTopic.replace(/(https?:\/\/[^\s]+)/g, (url) => {
+        return `<a href="${url}" target="_blank" style="color: var(--primary); text-decoration: underline; font-weight: bold; position: relative; z-index: 10;">${url}</a>`;
+    });
+
+    document.getElementById('homeTopic').innerHTML = topicWithLinks;
+    document.getElementById('homeQuestions').textContent = totalQuestions;
+    document.getElementById('homeTime').textContent = `${totalTimeMinutes} Minutes`;
+    document.getElementById('homeNegative').textContent = negativeMark > 0 ? `-${negativeMark} per wrong answer` : "No negative marking";
+
+    initTheme(); // Init theme on home page as well
+  }
+
+  function startQuiz() {
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('quiz-screen').style.display = 'block';
+    initQuiz();
+  }
+
+  function initQuiz() {
+    buildQuestionTiles();
+    renderQuestion(0);
+    initTimer();
+    initNav();
+    initFullscreen();
+    initFontSizeControls();
+    initLanguageSwitcher();
+    initSwipeNavigation();
+    updateStats();
+    quizNav.style.display = 'flex';
+  }
+
+  function initNav(){
+    submitBtn.addEventListener('click', () => {
+        if (confirm('Are you sure you want to submit the quiz?')) {
+            submitQuiz();
+        }
+    });
+
+    // --- MODAL TOGGLE LOGIC ---
+    const paletteModal = document.getElementById('paletteModal');
+    const openBtn = document.getElementById('openPaletteBtn');
+    const closeBtn = document.getElementById('closePaletteBtn');
+
+    const openModal = () => paletteModal.classList.add('show');
+    const closeModal = () => paletteModal.classList.remove('show');
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+
+    // Close if clicking outside content box
+    paletteModal.addEventListener('click', (e) => {
+        if(e.target === paletteModal) closeModal();
+    });
+
+    // keyboard
+    document.addEventListener('keydown',(e)=>{
+      if(e.target.tagName === 'INPUT') return;
+      if(e.key==='ArrowLeft') go(-1);
+      if(e.key==='ArrowRight') go(1);
+    });
+  }
+
+  function initTheme(){
+    const saved = localStorage.getItem('qa_theme');
+    if(saved==='dark'){ 
+        document.body.classList.add('dark-mode'); 
+        state.darkMode=true; 
+    }
+    updateThemeIcon();
+    themeToggle.addEventListener('click', ()=>{
+      state.darkMode = !state.darkMode;
+      document.body.classList.toggle('dark-mode', state.darkMode);
+      localStorage.setItem('qa_theme', state.darkMode?'dark':'light');
+      updateThemeIcon();
+      if(state.submitted) buildCharts(state.lastResultData);
+    });
+  }
+  function updateThemeIcon(){
+    const i = themeToggle.querySelector('i');
+    i.classList.toggle('fa-moon', !state.darkMode);
+    i.classList.toggle('fa-sun',  state.darkMode);
+  }
+
+  function initFullscreen() {
+    // Integrated into Header Timer
+    const timerDisplay = document.getElementById('headerTimerDisp');
+    if (!timerDisplay) return;
+
+    timerDisplay.addEventListener('click', () => {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+            });
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            }
+        }
+    });
+  }
+
+  function initFontSizeControls() {
+      const fontBtn = document.getElementById('fontToggleBtn');
+      const fontSizes = [16, 18, 20, 22, 24]; // Larger sizes for clarity
+      let fontIndex = 0; // Starts at 16px
+
+      fontBtn.addEventListener('click', () => {
+          fontIndex = (fontIndex + 1) % fontSizes.length;
+          state.currentFontSize = fontSizes[fontIndex];
+          // Update the CSS Variable, not the root element
+          document.documentElement.style.setProperty('--dynamic-size', state.currentFontSize + 'px');
+      });
+  }
+
+  function initLanguageSwitcher() {
+      // Toggle order: Both -> Hindi -> English -> Both
+      const langOrder = ['both', 'hn', 'en'];
+
+      langToggleBtn.addEventListener('click', () => {
+          const currentIndex = langOrder.indexOf(state.currentLang);
+          const nextIndex = (currentIndex + 1) % langOrder.length;
+          state.currentLang = langOrder[nextIndex];
+
+          updateLangButton();
+          renderQuestion(state.current);
+      });
+  }
+
+  function updateLangButton() {
+      let label = 'BILI';
+      if (state.currentLang === 'hn') label = 'HIN';
+      if (state.currentLang === 'en') label = 'ENG';
+      langToggleBtn.textContent = label;
+  }
+
+  function translateText(text) {
+      if (!text) return text;
+      if (state.currentLang === 'both') return text;
+
+      // Check if string has HTML tags to decide between simple split and DOM traversal
+      const hasTags = /<[a-z][\s\S]*>/i.test(text);
+
+      if (hasTags) {
+          const div = document.createElement('div');
+          div.innerHTML = text;
+          walkAndTranslate(div);
+          return div.innerHTML;
+      } else {
+          // Plain text path
+          if (text.includes(' / ')) {
+              const parts = text.split(' / ');
+              if (parts.length >= 2) {
+                  const en = parts[0];
+                  const hn = parts.slice(1).join(' / ');
+                  return state.currentLang === 'hn' ? hn.trim() : en.trim();
+              }
+          }
+          return text;
+      }
+  }
+
+  function walkAndTranslate(node) {
+      if (node.nodeType === 3) { // Text node
+          const val = node.nodeValue;
+          if (val && val.includes(' / ')) {
+              const parts = val.split(' / ');
+              if (parts.length >= 2) {
+                  const en = parts[0];
+                  const hn = parts.slice(1).join(' / ');
+                  node.nodeValue = state.currentLang === 'hn' ? hn.trim() : en.trim();
+              }
+          }
+      } else if (node.nodeType === 1) { // Element node
+          for (let i = 0; i < node.childNodes.length; i++) {
+              walkAndTranslate(node.childNodes[i]);
+          }
+      }
+  }
+
+
+  function initSwipeNavigation() {
+    let touchStartX = 0;
+    let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
+    const swipeThreshold = 50; // Minimum distance for a swipe
+    const swipeRatio = 0.5; // Vertical distance should be less than half of horizontal
+
+    const swipeArea = document.querySelector('.quiz-main');
+
+    swipeArea.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    swipeArea.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        touchEndY = e.changedTouches[0].screenY;
+        handleSwipe();
+    }, { passive: true });
+
+    function handleSwipe() {
+        if (state.submitted && !state.inReviewMode) return;
+
+        const dx = touchEndX - touchStartX;
+        const dy = touchEndY - touchStartY;
+
+        if (Math.abs(dx) > swipeThreshold && Math.abs(dy) < Math.abs(dx) * swipeRatio) {
+            if (dx < 0) {
+                go(1); // Swiped left
+            } else {
+                go(-1); // Swiped right
+            }
+        }
+    }
+  }
+
+  // ----- Timer -----
+  function initTimer(){
+    const start = Date.now();
+    const duration = state.totalTime*1000;
+    const end = start + duration;
+    tick(); state.timerInterval = setInterval(tick, 1000);
+    function tick(){
+      const now = Date.now();
+      const left = Math.max(0, end-now);
+      const m = String(Math.floor(left/60000)).padStart(2,'0');
+      const s = String(Math.floor((left%60000)/1000)).padStart(2,'0');
+
+      // Sidebar timer
+      document.getElementById('minutes').textContent = m;
+      document.getElementById('seconds').textContent = s;
+
+      // Header timer (NEW)
+      const headerTimer = document.getElementById('headerTimerDisp');
+      if(headerTimer) headerTimer.textContent = `${m}:${s}`;
+
+      const pct = (left/duration)*100;
+      const bar = document.getElementById('timeProgress');
+      bar.style.width = pct + '%';
+      if(left<=0){ clearInterval(state.timerInterval); submitQuiz(); }
+      else if(pct<25) bar.className='progress-bar bg-danger';
+      else if(pct<50) bar.className='progress-bar bg-warning';
+      else bar.className='progress-bar bg-primary';
+    }
+  }
+
+  // ----- Sidebar tiles -----
+  function buildQuestionTiles(){
+    qListGrid.innerHTML = '';
+    quizData.questions.forEach((_,i)=>{
+      const d = document.createElement('div');
+      d.className='q-tile'; d.textContent=i+1;
+      d.addEventListener('click', ()=>{
+        // Close modal IMMEDIATELY upon clicking, before rendering or anything else
+        document.getElementById('paletteModal').classList.remove('show');
+
+        if(!state.submitted) updateTime();
+        renderQuestion(i);
+      });
+      qListGrid.appendChild(d);
+    });
+  }
+
+  function updateTiles(){
+    document.querySelectorAll('.q-tile').forEach((el,idx)=>{
+      el.className='q-tile'; // Reset
+      if(state.submitted){
+          if(state.answers[idx] === quizData.questions[idx].correctIndex) el.classList.add('review-correct');
+          else if(state.answers[idx] !== null) el.classList.add('review-incorrect');
+          else el.classList.add('review-unattempted');
+      } else {
+        if(state.answers[idx] !== null) el.classList.add('answered');
+        if(state.markedForReview[idx]) el.classList.add('marked');
+      }
+      if(idx === state.current) el.classList.add('current');
+    });
+  }
+
+  // ----- Render question -----
+  function renderQuestion(idx){
+    if (idx < 0 || idx >= quizData.questions.length) return;
+
+    // Stop previous Question Timer
+    if (state.qTimerInterval) clearInterval(state.qTimerInterval);
+
+    state.current=idx;
+    const q=quizData.questions[idx];
+
+    // Live Accuracy Calculation
+    let accuracyBadge = '';
+    if (quizData.leaderboard && quizData.leaderboard.question_stats && quizData.leaderboard.question_stats[idx]) {
+        const stats = quizData.leaderboard.question_stats[idx];
+        if(stats.total > 0) {
+            const acc = Math.round((stats.correct / stats.total) * 100);
+            accuracyBadge = `<span class="q-accuracy" title="Based on ${stats.total} Telegram users"><i class="fas fa-bullseye me-1"></i>${acc}%</span>`;
+        }
+    }
+
+    // --- Marking Scheme Badge Logic ---
+    let markHtml = '';
+    const posMark = 1; // Assuming +1 for correct
+    const negMark = state.negativeMark;
+
+    if (!state.submitted) {
+        // Live Mode: Show full scheme
+        markHtml = `<span class="q-marks" title="Marking Scheme"><i class="fas fa-star-half-alt me-1"></i>+${posMark} / -${negMark}</span>`;
+    } else {
+        // Review Mode: Show result
+        const userAns = state.answers[idx];
+        const isCorrect = userAns === q.correctIndex;
+        const isSkipped = userAns === null;
+
+        if (isSkipped) {
+             markHtml = `<span class="q-marks text-muted">0</span>`;
+        } else if (isCorrect) {
+             markHtml = `<span class="q-marks positive">+${posMark}</span>`;
+        } else {
+             markHtml = `<span class="q-marks negative">-${negMark}</span>`;
+        }
+    }
+
+    // Question Card HTML
+    // Updated: Completely removed bottom margin and padding from header row
+    // Updated: Trimmed q.text and removed internal indentation artifacts from JSON source
+    let textContent = q.text;
+    if(typeof textContent === 'string') {
+        textContent = textContent.trim();
+        // Regex to replace newline followed by whitespace with a single space
+        // This collapses the indentation from the JSON string which causes layout gaps
+        textContent = textContent.replace(/\n\s+/g, ' '); 
+    }
+
+    let questionHtml=`
+      <div class="card-ui">
+        <div class="d-flex justify-content-between align-items-center mb-0 pb-0 border-bottom-0" style="min-height: 24px;">
+            <div class="q-meta-container">
+                <h5 class="fw-bold m-0" style="line-height:1;">Question ${idx+1}</h5>
+                <span class="q-timer"><i class="fas fa-stopwatch me-1"></i><span id="qTimerDisp">0s</span></span>
+                ${markHtml}
+                ${accuracyBadge}
+            </div>
+            ${q.reference ? `<div class="small opacity-75">${q.reference}</div>` : ''}
+        </div>
+        <!-- Removed mt-2 for tighter spacing -->
+        <div class="q-text mt-2">${translateText(textContent)}</div>
+        <div class="options">`;
+    q.options.forEach((opt,i)=>{
+      let cls='option-btn';
+      // User selection logic for Live Mode
+      if(state.answers[idx]===i) cls+=' selected';
+
+      // Review Mode Logic
+      if(state.submitted){
+        if(i===q.correctIndex) cls+=' correct';
+        else if(state.answers[idx]===i) cls+=' incorrect';
+      }
+
+      // Add Checkmark span (only visible via CSS if selected)
+      questionHtml += `<button class="${cls}" data-i="${i}">
+          <span>${translateText(opt)}</span>
+          <span class="user-check"><i class="fas fa-check-circle"></i></span>
+      </button>`;
+    });
+    const translatedExplanation = translateText(q.explanation || 'Not available.');
+    questionHtml += `</div>
+        ${state.submitted ? `<div class="explanation mt-3"><strong>Explanation:</strong> ${translatedExplanation}</div>` : ''}
+      </div>
+    `;
+    questionArea.innerHTML = questionHtml;
+
+    // Start per-question timer logic (Visual only)
+    if (!state.submitted) {
+        // Start from time already spent
+        let secondsSpent = Math.floor(state.timePerQ[idx] || 0);
+        const timerEl = document.getElementById('qTimerDisp');
+        if(timerEl) {
+            timerEl.textContent = secondsSpent + 's';
+            state.qTimerInterval = setInterval(() => {
+                secondsSpent++;
+                timerEl.textContent = secondsSpent + 's';
+            }, 1000);
+        }
+    } else {
+        // Show static time if submitted
+         const timerEl = document.getElementById('qTimerDisp');
+         if(timerEl) timerEl.textContent = Math.floor(state.timePerQ[idx] || 0) + 's';
+    }
+
+
+    // Navigation Buttons HTML
+    let buttonsHtml = `
+      <button id="prevBtn" class="btn btn-outline-secondary btn-nav"><i class="fas fa-chevron-left me-2"></i>Previous</button>
+      <button id="markBtn" class="btn btn-outline-info btn-nav">
+          ${state.markedForReview[idx] ? '<i class="fas fa-bookmark me-2"></i>Unmark' : '<i class="far fa-bookmark me-2"></i>Mark for Review'}
+      </button>
+      <button id="nextBtn" class="btn btn-primary btn-nav">Next<i class="fas fa-chevron-right ms-2"></i></button>
+    `;
+    quizNav.innerHTML = buttonsHtml;
+
+
+    // Add event listeners to new elements
+    document.getElementById('prevBtn').addEventListener('click', () => go(-1));
+    document.getElementById('nextBtn').addEventListener('click', () => go(1));
+    document.getElementById('markBtn').addEventListener('click', toggleMark);
+
+    if(state.submitted) {
+        document.getElementById('markBtn').style.display = 'none';
+    }
+
+    document.querySelectorAll('.option-btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        if(state.submitted) return;
+        clickSound.currentTime=0; clickSound.play();
+        const i = parseInt(btn.dataset.i);
+        state.answers[state.current] = (state.answers[state.current] === i) ? null : i; // Allow un-selecting
+        renderQuestion(state.current); // Re-render to show selection change
+        updateStats();
+        updateTiles();
+      });
+    });
+
+    updateTiles();
+    updateProgress();
+
+    // Sound for review mode
+    if(state.inReviewMode && state.lastSoundIdx!==idx){
+      state.lastSoundIdx=idx;
+      const isAttempted = state.answers[idx]!==null;
+      const isCorrect = isAttempted && state.answers[idx]===q.correctIndex;
+      if(isAttempted){
+        setTimeout(()=>{ (isCorrect?correctSound:wrongSound).play(); }, 250);
+      }
+    }
+  }
+
+  function go(dir){
+    const i = state.current + dir;
+    if(i>=0 && i<quizData.questions.length){
+      if(!state.submitted) updateTime();
+      renderQuestion(i);
+    }
+  }
+
+  function toggleMark() {
+    state.markedForReview[state.current] = !state.markedForReview[state.current];
+    renderQuestion(state.current); // Re-render to update button text
+    updateTiles();
+    updateStats();
+  }
+
+  function updateTime(){
+    const now = new Date();
+    state.timePerQ[state.current] += (now - state.startTime)/1000;
+    state.startTime = now;
+  }
+
+  function updateStats() {
+    const answeredCount = state.answers.filter(a => a !== null).length;
+    const markedCount = state.markedForReview.filter(m => m).length;
+    const totalCount = quizData.questions.length;
+    document.getElementById('statAnswered').textContent = answeredCount;
+    document.getElementById('statUnanswered').textContent = totalCount - answeredCount;
+    document.getElementById('statMarked').textContent = markedCount;
+    document.getElementById('statTotal').textContent = totalCount;
+  }
+
+  function updateProgress() {
+      const answeredCount = state.answers.filter(a => a !== null).length;
+      const totalCount = quizData.questions.length;
+      const percent = totalCount > 0 ? (answeredCount / totalCount) * 100 : 0;
+      const progressBar = document.getElementById('thinProgressBarInner');
+      if (progressBar) {
+          progressBar.style.width = `${percent}%`;
+      }
+  }
+
+  // ----- Submit & Results -----
+  function submitQuiz(){
+    if(state.submitted) return;
+
+    // Explicitly CLOSE the palette if it is open
+    document.getElementById('paletteModal').classList.remove('show');
+
+    clearInterval(state.timerInterval);
+    if(state.qTimerInterval) clearInterval(state.qTimerInterval); // Stop question timer
+
+    updateTime();
+    state.submitted=true;
+
+    let correct=0, incorrect=0, unattempted=0, score=0, neg=0;
+    state.answers.forEach((a,i)=>{
+      if(a===null){ unattempted++; }
+      else if(a===quizData.questions[i].correctIndex){ correct++; score+=1; }
+      else { incorrect++; score-=state.negativeMark; neg+=state.negativeMark; }
+    });
+
+    state.avgTime = state.timePerQ.reduce((s,t)=>s+t,0)/quizData.questions.length;
+    const pct = (score/quizData.questions.length)*100;
+
+    questionArea.style.display = 'none';
+    quizNav.style.display = 'none';
+    submitBtn.style.display = 'none';
+    document.querySelector('.quiz-main-header').style.display = 'none';
+
+    renderResults({correct, incorrect, unattempted, score, neg, pct});
+    resultsContainer.style.display = 'block';
+
+    updateTiles();
+
+    if(pct>=70){ confetti(); correctSound.play(); }
+    else if(pct<50){ wrongSound.play(); }
+  }
+
+  function renderResults(resData) {
+      const { correct, incorrect, unattempted, score, neg, pct } = resData;
+      const total = quizData.questions.length;
+      state.lastResultData = resData; // Save for redrawing charts on theme change
+
+      let html = `
+        <div class="text-center">
+            <h2 class="fw-bold">Quiz Completed!</h2>
+            <p>Here is your performance summary.</p>
+            <div class="final-score">${pct.toFixed(1)}%</div>
+            <div class="fs-4 fw-bold mb-4">${score.toFixed(2)} / ${total}</div>
+        </div>
+
+        <ul class="nav nav-pills justify-content-center mb-3 results-tabs" id="pills-tab" role="tablist">
+          <li class="nav-item" role="presentation"><button class="nav-link active" id="pills-summary-tab" data-bs-toggle="pill" data-bs-target="#pills-summary" type="button" role="tab">Summary</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" id="pills-analysis-tab" data-bs-toggle="pill" data-bs-target="#pills-analysis" type="button" role="tab">Analysis</button></li>
+        </ul>
+
+        <div class="tab-content" id="pills-tabContent">
+          <div class="tab-pane fade show active" id="pills-summary" role="tabpanel">
+            <div class="row g-3">
+                <div class="col-md-6"><div class="p-3 bg-light rounded d-flex justify-content-between"><span>Total Questions</span><span class="fw-bold">${total}</span></div></div>
+                <div class="col-md-6"><div class="p-3 bg-light rounded d-flex justify-content-between"><span>Correct</span><span class="fw-bold text-success">${correct}</span></div></div>
+                <div class="col-md-6"><div class="p-3 bg-light rounded d-flex justify-content-between"><span>Incorrect</span><span class="fw-bold text-danger">${incorrect}</span></div></div>
+                <div class="col-md-6"><div class="p-3 bg-light rounded d-flex justify-content-between"><span>Unattempted</span><span class="fw-bold text-warning">${unattempted}</span></div></div>
+                <div class="col-md-6"><div class="p-3 bg-light rounded d-flex justify-content-between"><span>Negative Marks</span><span class="fw-bold text-danger">-${neg.toFixed(2)}</span></div></div>
+            </div>
+          </div>
+          <div class="tab-pane fade" id="pills-analysis" role="tabpanel">
+            <div class="chart-container mb-3"><canvas id="performanceChart"></canvas></div>
+            <div class="chart-container" style="height: 300px;"><canvas id="timeAnalysisChart"></canvas></div>
+
+            <h5 class="fw-bold mt-5 mb-3 text-center">Telegram Leaderboard</h5>
+            <div id="leaderboardSection"></div>
+          </div>
+        </div>
+        <div class="text-center mt-4">
+            <button id="reviewBtn" class="btn btn-primary btn-lg"><i class="fas fa-search me-2"></i>Review Answers</button>
+        </div>
+      `;
+      resultsContainer.innerHTML = html;
+
+      document.getElementById('reviewBtn').addEventListener('click', reviewMode);
+
+      // Render Leaderboard
+      const lbSection = document.getElementById('leaderboardSection');
+      if (quizData.leaderboard && quizData.leaderboard.rankings && quizData.leaderboard.rankings.length > 0) {
+          let lbHtml = `<table class="leaderboard-table">
+              <thead><tr><th>Rank</th><th>User</th><th>Score</th><th>Acc</th></tr></thead>
+              <tbody>`;
+
+          quizData.leaderboard.rankings.forEach((rank, i) => {
+              const rankClass = i < 3 ? `rank-${i+1}` : '';
+              lbHtml += `<tr>
+                  <td class="${rankClass}">#${i+1}</td>
+                  <td>${rank.name}</td>
+                  <td>${rank.score.toFixed(1)}</td>
+                  <td>${rank.accuracy.toFixed(0)}%</td>
+              </tr>`;
+          });
+
+          lbHtml += `</tbody></table>`;
+          lbSection.innerHTML = lbHtml;
+      } else {
+          lbSection.innerHTML = `<div class="text-muted small text-center p-3">No Telegram comparison data available yet.</div>`;
+      }
+
+      // Trigger chart build after tab is shown
+      const analysisTab = document.getElementById('pills-analysis-tab');
+      analysisTab.addEventListener('shown.bs.tab', () => buildCharts(resData), { once: true });
+  }
+
+  let performanceChartInstance, timeAnalysisChartInstance;
+  function buildCharts(res){
+    const {correct, incorrect, unattempted} = res;
+    Chart.defaults.color = state.darkMode ? '#e8eaed' : '#6c757d';
+
+    if (performanceChartInstance) performanceChartInstance.destroy();
+    performanceChartInstance = new Chart(document.getElementById('performanceChart').getContext('2d'),{
+      type:'doughnut',
+      data:{ labels:['Correct','Incorrect','Unattempted'],
+        datasets:[{ data:[correct,incorrect,unattempted],
+          backgroundColor:['#20c997','#e63946','#ffb703'], borderWidth: 0 }]},
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{position:'bottom'}} }
+    });
+
+    const labels = Array.from({length:quizData.questions.length},(_,i)=>`Q${i+1}`);
+    const correctTimes = state.timePerQ.map((t,i) => state.answers[i] === quizData.questions[i].correctIndex ? t : 0);
+    const incorrectTimes = state.timePerQ.map((t,i) => (state.answers[i] !== null && state.answers[i] !== quizData.questions[i].correctIndex) ? t : 0);
+
+    if(timeAnalysisChartInstance) timeAnalysisChartInstance.destroy();
+    timeAnalysisChartInstance = new Chart(document.getElementById('timeAnalysisChart').getContext('2d'),{
+      type:'bar',
+      data:{ labels,
+        datasets:[
+          {label:'Correct', data:correctTimes, backgroundColor:'rgba(32, 201, 151, 0.7)'},
+          {label:'Incorrect', data:incorrectTimes, backgroundColor:'rgba(230, 57, 70, 0.7)'}
+        ]},
+      options:{ responsive:true, maintainAspectRatio:false, indexAxis: 'x',
+        scales:{ x:{stacked:true, grid: {color: state.darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}},
+                 y:{stacked:true, title:{display:true,text:'Time (s)'}, grid: {color: state.darkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}} },
+      }
+    });
+  }
+
+  function reviewMode(){
+    state.inReviewMode=true; state.lastSoundIdx=-1;
+    questionArea.style.display='block';
+    quizNav.style.display = 'flex';
+    resultsContainer.style.display='none';
+    document.querySelector('.quiz-main-header').style.display = 'flex';
+    renderQuestion(0);
+  }
+
+  function confetti(){
+    const colors=['#6a5af9','#f72585','#20c997','#ffb703'];
+    for(let i=0;i<100;i++){
+      const d=document.createElement('div');
+      d.style.cssText=`position:fixed;width:10px;height:10px;top:-10px;left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};z-index:1300;`;
+      document.body.appendChild(d);
+      const dy = Math.random()*500+500, rot = Math.random()*360;
+      const anim = d.animate([{transform:'translateY(0) rotate(0)',opacity:1},{transform:`translateY(${dy}px) rotate(${rot}deg)`,opacity:0}],
+        {duration:Math.random()*2000+2000, easing:'ease-out'});
+      anim.onfinish=()=>d.remove();
+    }
+  }
+})();
+</script>
